@@ -1,1 +1,1 @@
-# groupshub
+# groups
