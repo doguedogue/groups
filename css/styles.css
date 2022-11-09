@@ -11672,6 +11672,7 @@ body {
   position: relative;
   width: 100%;
   padding-right: 1rem;
+  text-align: center;
 }
 
 .dataTable-sorter::before,
@@ -11747,4 +11748,5 @@ body {
 td, th {  
   background-color: var(--bs-dark-mode);
   color: var(--bs-gray);
+  text-align: center;
 }
