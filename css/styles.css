@@ -63,6 +63,7 @@
   --bs-body-color: #212529;
   --bs-body-bg: #fff;
   --bs-dark-mode: #23262b;
+  --bs-black: #1b1e22;
 }
 
 *,
@@ -4068,11 +4069,16 @@ textarea.form-control-lg {
   align-items: center;
   justify-content: space-between;
 }
+.logo-brand {
+  margin-left: 0.4rem;
+}
+
 .navbar-brand {
   padding-top: 0.3125rem;
   padding-bottom: 0.3125rem;
   margin-right: 1rem;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
+  font-weight: bolder;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -4533,7 +4539,7 @@ textarea.form-control-lg {
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #fff;
+  background-color: var(--bs-black);
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
@@ -4567,7 +4573,8 @@ textarea.form-control-lg {
 
 .card-body {
   flex: 1 1 auto;
-  padding: 1rem 1rem;
+  padding: 1rem 1rem;  
+  background-color: var(--bs-black);
 }
 
 .card-title {
@@ -11433,7 +11440,7 @@ body {
   z-index: 1039;
 }
 .sb-topnav .navbar-brand {
-  width: 225px;
+  width: 140px;
   margin: 0;
 }
 .sb-topnav.navbar-dark #sidebarToggle {
