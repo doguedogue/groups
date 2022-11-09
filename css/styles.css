@@ -1965,7 +1965,7 @@ progress {
   --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
   --bs-table-active-color: #212529;
   --bs-table-active-bg: rgba(0, 0, 0, 0.1);
-  --bs-table-hover-color: white;
+  --bs-table-hover-color: rgb(204, 202, 56);
   --bs-table-hover-bg: rgba(210, 208, 208, 0.075);
   width: 100%;
   margin-bottom: 1rem;
@@ -11747,10 +11747,19 @@ body {
 
 td, th {  
   background-color: var(--bs-dark-mode);
-  color: var(--bs-gray);
+  color: var(--bs-body-bg);
   text-align: center;
 }
 
 .foooter-dark {
   background-color: var(--bs-black);
+}
+
+.badge.badge-pill {
+  border-radius: 10rem;
+}
+
+.badge-outline-warning {
+  color: #ffc300;
+  border: 1px solid #ffc300;
 }
