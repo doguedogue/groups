@@ -11750,3 +11750,7 @@ td, th {
   color: var(--bs-gray);
   text-align: center;
 }
+
+.foooter-dark {
+  background-color: var(--bs-black);
+}
