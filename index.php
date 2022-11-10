@@ -136,12 +136,6 @@ $resultado->execute();
                                     &nbsp;
                                     <button type="button" class="btn btn-warning mr-2" id="usuarios">
                                     <span><i class='fas fa-user-group'></i></span>Usuarios</button>
-
-
-                                    <!-- <li class="breadcrumb-item px-2"><a href="grupos.php">
-                                        <i class="fas fa-folder-plus" style="color:green"></i>&nbsp;Grupos</a></li>
-                                    <li class="breadcrumb-item px-2"><a href="usuarios.php">
-                                        <i class="fas fa-people-group" style="color:yellow"></i>&nbsp;Usuarios</a></li> -->
                                 </ol>
                             </div>
                         </div>

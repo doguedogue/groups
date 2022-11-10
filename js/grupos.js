@@ -7,7 +7,7 @@
         const nombre = button.data('nombre');
         const icon = button.data('icon');
 
-        console.log("Icono editar: "+icon);
+        console.log("Icono editar: " + icon);
 
         var modal = $(this);
         modal.find('.modal-title').text(id > 0 ? "Actualizar Grupo" : "Nuevo Grupo");
@@ -15,11 +15,13 @@
         modal.find('#nombre').val(nombre);
         modal.find("#icon option[value='" + icon + "']").prop('selected', true);
 
-
         if (id > 0) {
             document.getElementById('boton_crear').className = 'btn btn-warning';
             modal.find('#boton_crear').val("Actualizar");
         } else {
+            //restart
+            const selectIcon = document.getElementById("icon");
+            selectIcon.selectedIndex = 0;
             document.getElementById('boton_crear').className = 'btn btn-success';
             modal.find('#boton_crear').val("Crear");
         }

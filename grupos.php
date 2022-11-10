@@ -131,11 +131,14 @@ $resultado->execute();
                                             print "<td>". $data['nombre'] . "</td>";
                                             print "<td style='font-size:27px;'>". $data['icon'] . "</td>";
                                             print "<td>".  
+                                                    "<a href='#' data-toggle='modal' data-target='#deleteModal' data-id='".
+                                                    $data['id']."' title='Borrar Grupo'><span><i class='fas fa-trash'></i></span></a>". 
+                                                    "&nbsp;&nbsp;" . 
                                                     "<a href='#' data-toggle='modal' data-target='#createModal'".
                                                     "data-id='".$data['id']."' ".
                                                     "data-nombre='".$data['nombre']."' ".
                                                     "data-icon='".$data['icon']."' ".
-                                                    "title='Editar Categoría'>".
+                                                    "title='Editar Grupo'>".
                                                     "<span><i class='fas fa-edit'></i></span></a>" .
                                                   "</td>";
                                             print "</tr>";
@@ -159,6 +162,29 @@ $resultado->execute();
                         </div>
                     </div>
                 </footer>
+            </div>
+        </div>
+
+        <!-- Modal Delete -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modalLabelDelete"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content bg-dark">
+                    <form id="formCategoriasEliminar">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabelDelete"><span><i class='fas fa-trash'></i></span>&nbsp;Eliminar Grupo</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Seguro que desea eliminar el Grupo?</div>
+                        <input type="text" class="form-control" id="id_borrar" hidden>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <input  type="submit" class="btn btn-danger" value="Borrar">
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
