@@ -11764,7 +11764,37 @@ td, th {
   border: 1px solid #ffc300;
 }
 
-.combo-dark{
+.combo-dark {
   background-color: var(--bs-dark-mode);
   color: var(--bs-body-bg);
+}
+
+.modal-body{
+  background-color: var(--bs-black);
+  color: var(--bs-body-bg);
+}
+
+
+.modal-title{
+  color: var(--bs-body-bg);
+}
+
+button.close {
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  color: var(--bs-body-bg);
+}
+.close {
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: .5;
+}
+
+.icon{
+    font-size: 50px;
 }

@@ -161,7 +161,7 @@ $resultado->execute();
                                     <?php                                     
                                         while($data = $resultado->fetch(PDO::FETCH_ASSOC)){                                           
                                             print "<tr>";
-                                            print "<td><img src='./assets/icon/".$data['icon']."' alt='icon' width='30px'></td>";
+                                            print "<td style='font-size:27px;'>". $data['icon'] . "</td>";
                                             print "<td>". $data['nombre'] . "</td>";
                                             print "<td><div class='badge badge-pill badge-outline-warning'>". $data['registros'] . "</div></td>";
                                             print "<td>".  
