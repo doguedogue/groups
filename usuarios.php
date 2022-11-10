@@ -1,3 +1,27 @@
+<?php
+
+include_once './bd/conexion.php';
+
+$objconexion = new Conexion();
+$conexion = $objconexion->Conectar();
+
+$query_where = "";
+if (isset($_GET["u"]) && preg_match("/^[0-9]+$/", $_GET["u"])){
+    $int = intval($_GET['u']);
+    $query_where = "WHERE id = ".$int." ";
+}
+
+$query = "SELECT id, login, name, avatar_url, ".
+        "follower, following ".
+        "FROM USUARIO ".
+        $query_where.
+        "ORDER BY name";
+$resultado = $conexion->prepare($query);
+$resultado->execute();
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -9,7 +33,10 @@
         <title>Groups</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
-        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>   
+        
+        <link rel="stylesheet" href="./vendor/sweetalert2/dist/dark.css" />
+
         <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
     </head>
     <body class="sb-nav-fixed">
@@ -76,14 +103,10 @@
                             <div class="card-body">
                                 <h2>Usuarios</h2>
                                 <ol class="breadcrumb mb-1">
-                                    <li class="breadcrumb-item">
-                                        <select class="combo-dark" name="search" id="search">
-                                            <option value="1" active>Todos</option>
-                                            <option value="2">Followers</option>
-                                            <option value="3">Following</option>
-                                        </select>                                        
-                                    </li>
-                                    <li class="breadcrumb-item px-5"><a href="grupos.php"><i class="fas fa-folder-plus" style="color:green"></i>&nbsp;Añadir Grupo</a></li>                                    
+
+                                <button type="button" class="btn btn-primary mr-3" data-toggle='modal' 
+                                    data-target='#createModal' data-id='' data-nombre='' data-icon=''>
+                                    <span><i class='fas fa-plus'></i></span> Añadir Usuario</button>
                                 </ol>
                             </div>
                         </div>
@@ -92,95 +115,41 @@
                                 <table id="datatablesSimple">
                                     <thead>
                                         <tr>
-                                            <th>Icon</th>
-                                            <th>Grupo</th>
-                                            <th>Miembros</th>
+                                            <th>Imagen</th>
+                                            <th>Username</th>
+                                            <th>Nombre</th>
                                             <th>⚙️</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>Icon</th>
-                                            <th>Grupo</th>
-                                            <th>Miembros</th>
+                                            <th>Imagen</th>
+                                            <th>Username</th>
+                                            <th>Nombre</th>
                                             <th>⚙️</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <tr>
-                                            <td>🚀</td>
-                                            <td>1er Trabajo</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">10</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🐶</td>
-                                            <td>Primaria</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">29</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🛸</td>
-                                            <td>Secundaria</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">75</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🦄</td>
-                                            <td>Universidad</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">98</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>📲</td>
-                                            <td>React</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">45</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🔑</td>
-                                            <td>Fullstack</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">17</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>☕</td>
-                                            <td>Java</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">37</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🎁</td>
-                                            <td>Trabajo</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">12</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🌮</td>
-                                            <td>RRHH</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">34</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🍟</td>
-                                            <td>Consultoria</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">100</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>👩‍🦰</td>
-                                            <td>Linkedin</td>
-                                            <td>
-                                                <div class="badge badge-pill badge-outline-warning">15</div>
-                                            </td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🎆</td>
-                                            <td>Pruebas</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">5</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
+                                        
+                                    <?php                                                                             
+                                        while($data = $resultado->fetch(PDO::FETCH_ASSOC)){                                           
+                                            print "<tr>";
+                                            print "<td><img src='". $data['avatar_url'] ."' alt='avatar' width='40px'></td>";
+                                            print "<td>". $data['login'] . "</td>";
+                                            print "<td>". $data['name'] . "</td>";                 
+                                            print "<td>".  
+                                                    "<a href='#' data-toggle='modal' data-target='#deleteModal' data-id='".
+                                                    $data['id']."' title='Borrar Usuario'><span><i class='fas fa-trash'></i></span></a>". 
+                                                    "&nbsp;&nbsp;" . 
+                                                    "<a href='#' data-toggle='modal' data-target='#createModal'".
+                                                    "data-id='".$data['id']."' ".
+                                                    "data-name='".$data['name']."' ".
+                                                    "title='Editar Usuario'>".
+                                                    "<span><i class='fas fa-edit'></i></span></a>" .
+                                                  "</td>";
+                                            print "</tr>";
+                                        }                                            
+                                    ?>
                                     </tbody>    
                                 </table>
                             </div>
@@ -201,9 +170,79 @@
                 </footer>
             </div>
         </div>
+
+        <!-- Modal Delete -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modalLabelDelete"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content bg-dark">
+                    <form id="formGruposEliminar">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabelDelete"><span><i class='fas fa-trash'></i></span>&nbsp;Eliminar Grupo</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Seguro que desea eliminar el Grupo?</div>
+                        <input type="text" class="form-control" id="id_borrar" hidden>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <input  type="submit" class="btn btn-danger" value="Borrar">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Create/Update -->
+        <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="modalLabelCreate" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content bg-dark">
+                    <form id="formGruposCrear">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabelCreate">Nuevo Grupo</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" class="form-control" id="id_grupo_update" hidden>
+                            <div class="form-group row">                            
+                                <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="nombre" placeholder="Nombre">
+                                </div>
+                            </div>    
+                            <div class="form-group row mt-3">                            
+                                <label for="icon" class="col-sm-2 col-form-label">Icon</label>
+                                <div class="col-sm-3">
+                                    <select class="form-control" id="icon" required>
+                                        <option value='&#8986;'  style='text-align:center;font-size: 27px'>&#8986;</option>
+                                    </select>
+                                </div>                                
+                            </div>    
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <input  type="submit" class="btn btn-success" value="Crear" id="boton_crear">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="./vendor/jquery/jquery.min.js"></script>
+        <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        
+        <!-- Core plugin JavaScript-->
+        <script src="./vendor/jquery-easing/jquery.easing.min.js"></script>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
+        <script src="js/usuarios.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple.js"></script>
+        <script src="js/datatables-simple.js"></script>        
+        <script src="./vendor/sweetalert2/dist/sweetalert2.min.js"></script>
     </body>
 </html>
