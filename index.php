@@ -123,7 +123,7 @@ $resultado->execute();
                             <div class="card-body">
                                 <h2>Mis Grupos</h2>
                                 <ol class="breadcrumb mb-1">
-                                    <li class="breadcrumb-item  mr-2">
+                                    <li class="breadcrumb-item  mr-2 mb-2">
                                         <select class="form-control combo-dark" name="search" id="search">
                                             <option value="1" <?php echo $op1; ?>>Todos</option>
                                             <option value="2" <?php echo $op2; ?>>Followers</option>

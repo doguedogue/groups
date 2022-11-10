@@ -6,6 +6,11 @@
         window.location.href = "./usuarios.php?q="+search;
     });
 
+    
+    $('#importar').click(function () {
+        window.location.href = "./importar.php";
+    });
+
     $('#createModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget)
         const id = button.data('id');

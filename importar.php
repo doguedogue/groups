@@ -74,115 +74,36 @@
                     <div class="container-fluid px-4">
                         <div class="card mb-4">
                             <div class="card-body">
-                                <h2>Importar</h2>
-                                <ol class="breadcrumb mb-1">
-                                    <li class="breadcrumb-item">
-                                        <select class="combo-dark" name="search" id="search">
-                                            <option value="1" active>Todos</option>
-                                            <option value="2">Followers</option>
-                                            <option value="3">Following</option>
-                                        </select>                                        
-                                    </li>
-                                    <li class="breadcrumb-item px-5"><a href="grupos.php"><i class="fas fa-folder-plus" style="color:green"></i>&nbsp;Añadir Grupo</a></li>                                    
-                                </ol>
+                                <h2>Importar Usuarios <br>Follow(ers|ing) de <span style="color:crimson;">GitHub&trade;</span></h2>                                
                             </div>
                         </div>
                         <div class="card mb-4">
                             <div class="card-body">
-                                <table id="datatablesSimple">
-                                    <thead>
-                                        <tr>
-                                            <th>Icon</th>
-                                            <th>Grupo</th>
-                                            <th>Miembros</th>
-                                            <th>⚙️</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Icon</th>
-                                            <th>Grupo</th>
-                                            <th>Miembros</th>
-                                            <th>⚙️</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <tr>
-                                            <td>🚀</td>
-                                            <td>1er Trabajo</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">10</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🐶</td>
-                                            <td>Primaria</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">29</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🛸</td>
-                                            <td>Secundaria</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">75</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🦄</td>
-                                            <td>Universidad</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">98</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>📲</td>
-                                            <td>React</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">45</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🔑</td>
-                                            <td>Fullstack</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">17</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>☕</td>
-                                            <td>Java</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">37</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🎁</td>
-                                            <td>Trabajo</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">12</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🌮</td>
-                                            <td>RRHH</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">34</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🍟</td>
-                                            <td>Consultoria</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">100</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>👩‍🦰</td>
-                                            <td>Linkedin</td>
-                                            <td>
-                                                <div class="badge badge-pill badge-outline-warning">15</div>
-                                            </td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🎆</td>
-                                            <td>Pruebas</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">5</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                    </tbody>    
-                                </table>
+                            <ol class="breadcrumb mb-1">
+                                    <li class="breadcrumb-item  mr-2">
+                                        <select class="form-control combo-dark" name="import_select" id="import_select">
+                                            <option value="follower" selected>Followers</option>
+                                            <option value="following">Following</option>
+                                        </select>                                        
+                                    </li>
+                                    &nbsp;
+                                    <li class="breadcrumb-item  mr-2">
+                                        <select class="form-control combo-dark" name="cantidad" id="cantidad">
+                                            <option value="5" selected>5</option>
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                            <option value="500">500</option>
+                                            <option value="1000">1,000</option>
+                                            <option value="5000">5,000</option>
+                                            <option value="0">Todos</option>
+                                        </select>                                        
+                                    </li>
+                                    &nbsp;
+                                    <button type="button" class="btn btn-warning mr-3" id="importar">
+                                        <span><i class='fa-solid fa-right-to-bracket'></i></span>&nbsp;Importar</button>
+                                </ol>
                             </div>
                         </div>
                     </div>
@@ -203,6 +124,7 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
+        <script src="js/importar.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="js/datatables-simple.js"></script>
     </body>

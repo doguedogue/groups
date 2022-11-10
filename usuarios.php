@@ -131,17 +131,23 @@ $resultado->execute();
                             <div class="card-body">
                                 <h2>Usuarios</h2>
                                 <ol class="breadcrumb mb-1">
-                                    <li class="breadcrumb-item  mr-2">
+                                    <li class="breadcrumb-item  mr-2 mb-2">
                                         <select class="form-control combo-dark" name="search" id="search">
                                             <option value="1" <?php echo $op1; ?>>Todos</option>
                                             <option value="2" <?php echo $op2; ?>>Followers</option>
                                             <option value="3" <?php echo $op3; ?>>Following</option>
                                         </select>                                        
                                     </li>
-                                    &nbsp;
-                                    <button type="button" class="btn btn-primary mr-3" data-toggle='modal' 
-                                        data-target='#createModal' data-id='' data-nombre='' data-icon=''>
-                                        <span><i class='fas fa-plus'></i></span> Añadir Usuario</button>
+                                    
+                                    <li class="breadcrumb-item  mr-2 mb-2">
+                                        <button type="button" class="btn btn-primary mr-3" data-toggle='modal' 
+                                            data-target='#createModal' data-id='' data-nombre='' data-icon=''>
+                                            <span><i class='fas fa-plus'></i></span> Añadir Usuario</button>
+                                    </li>                                    
+                                    <li class="breadcrumb-item  mr-2 mb-2">
+                                        <button type="button" class="btn btn-warning mr-3" id="importar">
+                                            <span><i class='fa-solid fa-right-to-bracket'></i></span>&nbsp;Importar</button>
+                                    </li>                                    
                                 </ol>
                             </div>
                         </div>
