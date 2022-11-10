@@ -1,3 +1,22 @@
+<?php
+
+include_once './bd/conexion.php';
+
+$objconexion = new Conexion();
+$conexion = $objconexion->Conectar();
+
+$query = "SELECT min(g.id) id_grupo,  g.nombre, count(*) registros ".
+        "FROM GRUPO_USUARIO gu, USUARIO u, GRUPO g ".
+        "WHERE gu.id_grupo = g.id and ".
+        "gu.id_usuario = u.id ".
+        "group by g.nombre ".
+        "ORDER BY g.nombre";
+$resultado = $conexion->prepare($query);
+$resultado->execute();
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -107,80 +126,18 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <tr>
-                                            <td>🚀</td>
-                                            <td>1er Trabajo</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">10</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🐶</td>
-                                            <td>Primaria</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">29</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🛸</td>
-                                            <td>Secundaria</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">75</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🦄</td>
-                                            <td>Universidad</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">98</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>📲</td>
-                                            <td>React</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">45</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🔑</td>
-                                            <td>Fullstack</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">17</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>☕</td>
-                                            <td>Java</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">37</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🎁</td>
-                                            <td>Trabajo</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">12</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🌮</td>
-                                            <td>RRHH</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">34</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🍟</td>
-                                            <td>Consultoria</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">100</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>👩‍🦰</td>
-                                            <td>Linkedin</td>
-                                            <td>
-                                                <div class="badge badge-pill badge-outline-warning">15</div>
-                                            </td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🎆</td>
-                                            <td>Pruebas</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">5</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
+                                    <?php                                     
+                                        while($data = $resultado->fetch(PDO::FETCH_ASSOC)){                                           
+                                            print "<tr>";
+                                            print "<td>🚀</td>";
+                                            print "<td>". $data['nombre'] . "</td>";
+                                            print "<td><div class='badge badge-pill badge-outline-warning'>". $data['registros'] . "</div></td>";
+                                            print "<td>".  
+                                                  "<a class='about' href='groupos.php?g=".$data['id_grupo']."' title='ver'>👁️‍🗨️</a>";
+                                                  "</td>";
+                                            print "</tr>";
+                                        }                                            
+                                    ?>
                                     </tbody>    
                                 </table>
                             </div>
