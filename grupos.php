@@ -103,9 +103,6 @@ $resultado->execute();
                                 <button type="button" class="btn btn-primary mr-3" data-toggle='modal' 
                                     data-target='#createModal' data-id='' data-nombre='' data-icon=''>
                                     <span><i class='fas fa-plus'></i></span> Añadir Grupo</button>
-
-                                    <!-- <li class="breadcrumb-item px-5"><a href="grupos.php">
-                                        <i class="fas fa-folder-plus" style="color:green"></i>&nbsp;Añadir Grupo</a></li> -->
                                 </ol>
                             </div>
                         </div>
@@ -1276,7 +1273,6 @@ $resultado->execute();
                                         <option value='&#129508;'  style='text-align:center;font-size: 27px'>&#129508;</option>
                                         <option value='&#129509;'  style='text-align:center;font-size: 27px'>&#129509;</option>
                                         <option value='&#129510;'  style='text-align:center;font-size: 27px'>&#129510;</option>
-
                                     </select>
                                 </div>                                
                             </div>    

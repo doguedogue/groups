@@ -123,17 +123,25 @@ $resultado->execute();
                             <div class="card-body">
                                 <h2>Mis Grupos</h2>
                                 <ol class="breadcrumb mb-1">
-                                    <li class="breadcrumb-item">
-                                        <select class="combo-dark" name="search" id="search">
+                                    <li class="breadcrumb-item  mr-2">
+                                        <select class="form-control combo-dark" name="search" id="search">
                                             <option value="1" <?php echo $op1; ?>>Todos</option>
                                             <option value="2" <?php echo $op2; ?>>Followers</option>
                                             <option value="3" <?php echo $op3; ?>>Following</option>
                                         </select>                                        
                                     </li>
-                                    <li class="breadcrumb-item px-2"><a href="grupos.php">
+                                    &nbsp;
+                                    <button type="button" class="btn btn-success mr-2" id="grupos">
+                                    <span><i class='fas fa-people-group'></i></span>Grupos</button>
+                                    &nbsp;
+                                    <button type="button" class="btn btn-warning mr-2" id="usuarios">
+                                    <span><i class='fas fa-user-group'></i></span>Usuarios</button>
+
+
+                                    <!-- <li class="breadcrumb-item px-2"><a href="grupos.php">
                                         <i class="fas fa-folder-plus" style="color:green"></i>&nbsp;Grupos</a></li>
                                     <li class="breadcrumb-item px-2"><a href="usuarios.php">
-                                        <i class="fas fa-people-group" style="color:yellow"></i>&nbsp;Usuarios</a></li>
+                                        <i class="fas fa-people-group" style="color:yellow"></i>&nbsp;Usuarios</a></li> -->
                                 </ol>
                             </div>
                         </div>
