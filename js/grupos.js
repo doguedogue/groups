@@ -39,7 +39,7 @@
 
         const id = $.trim($('#id_borrar').val());
 
-        console.log("formGruposEliminar id: "+id);
+        // console.log("formGruposEliminar id: "+id);
 
         if (id_borrar.length == 0) {
             Swal.fire({
@@ -83,6 +83,73 @@
                             icon: 'success',
                             title: 'Éxito',
                             text: 'Se eliminó el registro satisfactoriamente',
+                        }).then((result) => {
+                            window.location.href = "./grupos.php";
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+    $('#formGruposCrear').submit(function (e) {
+        e.preventDefault();
+
+        const id = $.trim($('#id_grupo_update').val());
+        const nombre = $.trim($('#nombre').val());
+        const icon = $.trim($('#icon option:selected').val());
+
+        // console.log("ID: " + id + " length: " + id.length);
+        // console.log("nombre: " + nombre);
+        // console.log("Icon: " + icon);
+
+        let accion = (id.length == 0) ? "create" : "update";
+
+        if (id.length == 0 && nombre.length == 0 && icon.length == 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Mensaje',
+                text: 'No se tiene todos los registros para crear un grupo',
+            });
+            return false;
+        } else {
+            $.ajax({
+                url: "./bd/grupos_alta.php",
+                type: "POST",
+                datatype: "json",
+                data: {
+                    id,
+                    nombre,
+                    icon
+                },
+                success: function (data) {
+                    //console.log("out: " + data);
+                    if (data.includes("Error de conexión a la BD")) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error de conexión a la BD',
+                        });
+                    } else if (data == "null" || data.includes("Duplicate")) {
+                        let texto_accion = (accion === "create") ? "crear" : "actualizar";
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error, grupo existente',
+                        });
+                    } else if (data == "null" || data.includes("Error")) {
+                        let texto_accion = (accion === "create") ? "crear" : "actualizar";
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error al ' + texto_accion + ' el registro',
+                        });
+                    } else {
+                        let texto_accion = (accion === "create") ? "creó" : "actualizó";
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Éxito',
+                            text: 'Se ' + texto_accion + ' el registro satisfactoriamente',
                         }).then((result) => {
                             window.location.href = "./grupos.php";
                         });
