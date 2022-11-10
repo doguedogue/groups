@@ -2,6 +2,8 @@
 target/*
 bin/*
 
+jenkins.bat
+
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar

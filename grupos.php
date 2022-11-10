@@ -15,10 +15,10 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a href="index.html">
-                <img src="/assets/img/logo.png" class="logo-brand" alt="Logo" width="80px">                
+            <a href="index.php">
+                <img src="./assets/img/logo.png" class="logo-brand" alt="Logo" width="80px">                
             </a>
-            <a class="navbar-brand ps-3" href="index.html">Groups</a>
+            <a class="navbar-brand ps-3" href="index.php">Groups</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -204,6 +204,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
+        <script src="js/datatables-simple.js"></script>
     </body>
 </html>
