@@ -207,7 +207,7 @@ $resultado->execute();
                             <div class="form-group row">                            
                                 <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="nombre" placeholder="Nombre">
+                                    <input type="text" class="form-control" id="nombre" placeholder="Nombre" required>
                                 </div>
                             </div>    
                             <div class="form-group row mt-3">                            

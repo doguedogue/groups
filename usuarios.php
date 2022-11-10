@@ -5,10 +5,36 @@ include_once './bd/conexion.php';
 $objconexion = new Conexion();
 $conexion = $objconexion->Conectar();
 
-$query_where = "";
+$query_where = "WHERE true ";
 if (isset($_GET["u"]) && preg_match("/^[0-9]+$/", $_GET["u"])){
     $int = intval($_GET['u']);
     $query_where = "WHERE id = ".$int." ";
+}
+
+$query_where_q = "and true ";
+$op1 = "";
+$op2 = "";
+$op3 = "";
+if (isset($_GET["q"])){
+    switch($_GET["q"]){
+        case "1":
+            $query_where_q = "and true ";
+            $op1 = "selected";
+            break;
+        case "2":
+            $query_where_q = "and follower = 1 ";
+            $op2 = "selected";
+            break;
+        case "3":
+            $query_where_q = "and following = 1 ";
+            $op3 = "selected";
+            break;
+        default:
+            $query_where_q = "and true ";    
+            $op1 = "selected";
+    }
+}else{
+    $op1 = "selected";
 }
 
 $query = "SELECT id, login, name, avatar_url, ".
@@ -16,6 +42,7 @@ $query = "SELECT id, login, name, avatar_url, ".
         "follower, following ".
         "FROM USUARIO ".
         $query_where.
+        $query_where_q.
         "ORDER BY name";
 $resultado = $conexion->prepare($query);
 $resultado->execute();
@@ -104,10 +131,17 @@ $resultado->execute();
                             <div class="card-body">
                                 <h2>Usuarios</h2>
                                 <ol class="breadcrumb mb-1">
-
-                                <button type="button" class="btn btn-primary mr-3" data-toggle='modal' 
-                                    data-target='#createModal' data-id='' data-nombre='' data-icon=''>
-                                    <span><i class='fas fa-plus'></i></span> Añadir Usuario</button>
+                                    <li class="breadcrumb-item  mr-2">
+                                        <select class="form-control combo-dark" name="search" id="search">
+                                            <option value="1" <?php echo $op1; ?>>Todos</option>
+                                            <option value="2" <?php echo $op2; ?>>Followers</option>
+                                            <option value="3" <?php echo $op3; ?>>Following</option>
+                                        </select>                                        
+                                    </li>
+                                    &nbsp;
+                                    <button type="button" class="btn btn-primary mr-3" data-toggle='modal' 
+                                        data-target='#createModal' data-id='' data-nombre='' data-icon=''>
+                                        <span><i class='fas fa-plus'></i></span> Añadir Usuario</button>
                                 </ol>
                             </div>
                         </div>

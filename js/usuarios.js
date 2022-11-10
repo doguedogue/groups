@@ -1,6 +1,11 @@
 (function () {
     'use strict';
 
+    $('#search').on('change', '', function (e) { 
+        const search = $.trim($('#search option:selected').val());
+        window.location.href = "./usuarios.php?q="+search;
+    });
+
     $('#createModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget)
         const id = button.data('id');
@@ -148,7 +153,7 @@
 
         let accion = (id.length == 0) ? "create" : "update";
 
-        if (id.length == 0 && name.length == 0) {
+        if (id.length == 0 && login.length == 0) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Mensaje',
