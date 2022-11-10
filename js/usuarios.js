@@ -34,12 +34,12 @@
         modal.find('#id_borrar').val(id_borrar);
     });
 
-    $('#formGruposEliminar').submit(function (e) {
+    $('#formUsuariosEliminar').submit(function (e) {
         e.preventDefault();
 
         const id = $.trim($('#id_borrar').val());
 
-        // console.log("formGruposEliminar id: "+id);
+        // console.log("formUsuariosEliminar id: "+id);
 
         if (id_borrar.length == 0) {
             Swal.fire({
@@ -50,7 +50,7 @@
             return false;
         } else {
             $.ajax({
-                url: "./bd/grupos_baja.php",
+                url: "./bd/usuarios_baja.php",
                 type: "POST",
                 datatype: "json",
                 data: {
@@ -84,7 +84,7 @@
                             title: 'Éxito',
                             text: 'Se eliminó el registro satisfactoriamente',
                         }).then((result) => {
-                            window.location.href = "./grupos.php";
+                            window.location.href = "./usuarios.php";
                         });
                     }
                 }
@@ -114,7 +114,7 @@
             return false;
         } else {
             $.ajax({
-                url: "./bd/grupos_alta.php",
+                url: "./bd/usuarios_alta.php",
                 type: "POST",
                 datatype: "json",
                 data: {
@@ -151,7 +151,7 @@
                             title: 'Éxito',
                             text: 'Se ' + texto_accion + ' el registro satisfactoriamente',
                         }).then((result) => {
-                            window.location.href = "./grupos.php";
+                            window.location.href = "./usuarios.php";
                         });
                     }
                 }

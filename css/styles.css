@@ -11798,3 +11798,7 @@ button.close {
 .icon{
     font-size: 50px;
 }
+
+.avatar {
+  border-radius: 50%;
+}

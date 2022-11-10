@@ -134,7 +134,7 @@ $resultado->execute();
                                     <?php                                                                             
                                         while($data = $resultado->fetch(PDO::FETCH_ASSOC)){                                           
                                             print "<tr>";
-                                            print "<td><img src='". $data['avatar_url'] ."' alt='avatar' width='40px'></td>";
+                                            print "<td><img src='". $data['avatar_url'] ."' alt='avatar' width='40px' class='avatar'></td>";
                                             print "<td>". $data['login'] . "</td>";
                                             print "<td>". $data['name'] . "</td>";                 
                                             print "<td>".  
@@ -176,14 +176,14 @@ $resultado->execute();
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content bg-dark">
-                    <form id="formGruposEliminar">
+                    <form id="formUsuariosEliminar">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalLabelDelete"><span><i class='fas fa-trash'></i></span>&nbsp;Eliminar Grupo</h5>
+                            <h5 class="modal-title" id="modalLabelDelete"><span><i class='fas fa-trash'></i></span>&nbsp;Eliminar Usuario</h5>
                             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
-                        <div class="modal-body">Seguro que desea eliminar el Grupo?</div>
+                        <div class="modal-body">Seguro que desea eliminar el Usuario?</div>
                         <input type="text" class="form-control" id="id_borrar" hidden>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
