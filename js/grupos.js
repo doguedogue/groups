@@ -26,5 +26,70 @@
             modal.find('#boton_crear').val("Crear");
         }
     });
+
+    $('#deleteModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id_borrar = button.data('id');
+        var modal = $(this);
+        modal.find('#id_borrar').val(id_borrar);
+    });
+
+    $('#formGruposEliminar').submit(function (e) {
+        e.preventDefault();
+
+        const id = $.trim($('#id_borrar').val());
+
+        console.log("formGruposEliminar id: "+id);
+
+        if (id_borrar.length == 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Mensaje',
+                text: 'No se tiene el registro a eliminar',
+            });
+            return false;
+        } else {
+            $.ajax({
+                url: "./bd/grupos_baja.php",
+                type: "POST",
+                datatype: "json",
+                data: {
+                    id
+                },
+                success: function (data) {
+                    //console.log("out: " + data);
+                    if (data.includes("Error de conexión a la BD")) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error de conexión a la BD',
+                        });
+                    }                    
+                    else if (data.includes("Error") && data.includes("constraint")) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error, él grupo tiene usuarios asignados',
+                        });
+                    }
+                    else if(data == "null" || data.includes("Error")) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error al eliminar el registro',
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Éxito',
+                            text: 'Se eliminó el registro satisfactoriamente',
+                        }).then((result) => {
+                            window.location.href = "./grupos.php";
+                        });
+                    }
+                }
+            });
+        }
+    });
     
 })();

@@ -32,7 +32,10 @@ $resultado->execute();
         <title>Groups</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
-        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>   
+        
+        <link rel="stylesheet" href="./vendor/sweetalert2/dist/dark.css" />
+
         <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
     </head>
     <body class="sb-nav-fixed">
@@ -170,7 +173,7 @@ $resultado->execute();
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content bg-dark">
-                    <form id="formCategoriasEliminar">
+                    <form id="formGruposEliminar">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalLabelDelete"><span><i class='fas fa-trash'></i></span>&nbsp;Eliminar Grupo</h5>
                             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -192,7 +195,7 @@ $resultado->execute();
         <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="modalLabelCreate" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content bg-dark">
-                    <form id="formCategoriasCrear">
+                    <form id="formGruposCrear">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalLabelCreate">Nuevo Grupo</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1323,6 +1326,7 @@ $resultado->execute();
         <script src="js/scripts.js"></script>
         <script src="js/grupos.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple.js"></script>
+        <script src="js/datatables-simple.js"></script>        
+        <script src="./vendor/sweetalert2/dist/sweetalert2.min.js"></script>
     </body>
 </html>
