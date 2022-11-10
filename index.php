@@ -5,10 +5,38 @@ include_once './bd/conexion.php';
 $objconexion = new Conexion();
 $conexion = $objconexion->Conectar();
 
+$query_where = "and true ";
+$op1 = "";
+$op2 = "";
+$op3 = "";
+if (isset($_GET["q"])){
+    switch($_GET["q"]){
+        case "1":
+            $query_where = "and true ";
+            $op1 = "selected";
+            break;
+        case "2":
+            $query_where = "and u.follower = 1 ";
+            $op2 = "selected";
+            break;
+        case "3":
+            $query_where = "and u.following = 1 ";
+            $op3 = "selected";
+            break;
+        default:
+            $query_where = "and true ";    
+            $op1 = "selected";
+    }
+}else{
+    $op1 = "selected";
+}
+
+
 $query = "SELECT min(g.id) id_grupo,  g.nombre, count(*) registros ".
         "FROM GRUPO_USUARIO gu, USUARIO u, GRUPO g ".
         "WHERE gu.id_grupo = g.id and ".
         "gu.id_usuario = u.id ".
+        $query_where.
         "group by g.nombre ".
         "ORDER BY g.nombre";
 $resultado = $conexion->prepare($query);
@@ -97,12 +125,15 @@ $resultado->execute();
                                 <ol class="breadcrumb mb-1">
                                     <li class="breadcrumb-item">
                                         <select class="combo-dark" name="search" id="search">
-                                            <option value="1" active>Todos</option>
-                                            <option value="2">Followers</option>
-                                            <option value="3">Following</option>
+                                            <option value="1" <?php echo $op1; ?>>Todos</option>
+                                            <option value="2" <?php echo $op2; ?>>Followers</option>
+                                            <option value="3" <?php echo $op3; ?>>Following</option>
                                         </select>                                        
                                     </li>
-                                    <li class="breadcrumb-item px-5"><a href="grupos.php"><i class="fas fa-folder-plus" style="color:green"></i>&nbsp;Añadir Grupo</a></li>                                    
+                                    <li class="breadcrumb-item px-2"><a href="grupos.php">
+                                        <i class="fas fa-folder-plus" style="color:green"></i>&nbsp;Grupos</a></li>
+                                    <li class="breadcrumb-item px-2"><a href="usuarios.php">
+                                        <i class="fas fa-people-group" style="color:yellow"></i>&nbsp;Usuarios</a></li>
                                 </ol>
                             </div>
                         </div>
@@ -158,8 +189,10 @@ $resultado->execute();
                 </footer>
             </div>
         </div>
+        <script src="./vendor/jquery/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
+        <script src="js/misgrupos.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="js/datatables-simple.js"></script>
     </body>
