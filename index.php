@@ -32,7 +32,7 @@ if (isset($_GET["q"])){
 }
 
 
-$query = "SELECT min(g.id) id_grupo,  g.nombre, count(*) registros ".
+$query = "SELECT min(g.id) id_grupo, min(g.icon) icon,  g.nombre, count(*) registros ".
         "FROM GRUPO_USUARIO gu, USUARIO u, GRUPO g ".
         "WHERE gu.id_grupo = g.id and ".
         "gu.id_usuario = u.id ".
@@ -157,10 +157,11 @@ $resultado->execute();
                                         </tr>
                                     </tfoot>
                                     <tbody>
+                                        
                                     <?php                                     
                                         while($data = $resultado->fetch(PDO::FETCH_ASSOC)){                                           
                                             print "<tr>";
-                                            print "<td>🚀</td>";
+                                            print "<td><img src='./assets/icon/".$data['icon']."' alt='icon' width='30px'></td>";
                                             print "<td>". $data['nombre'] . "</td>";
                                             print "<td><div class='badge badge-pill badge-outline-warning'>". $data['registros'] . "</div></td>";
                                             print "<td>".  
