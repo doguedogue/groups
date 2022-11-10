@@ -1,3 +1,26 @@
+<?php
+
+include_once './bd/conexion.php';
+
+$objconexion = new Conexion();
+$conexion = $objconexion->Conectar();
+
+$query_where = "";
+if (isset($_GET["g"]) && preg_match("/^[0-9]+$/", $_GET["g"])){
+    $int = intval($_GET['g']);
+    $query_where = "WHERE id = ".$int." ";
+}
+
+$query = "SELECT id, nombre, icon ".
+        "FROM grupo ".
+        $query_where.
+        "ORDER BY 2";
+$resultado = $conexion->prepare($query);
+$resultado->execute();
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -76,14 +99,17 @@
                             <div class="card-body">
                                 <h2>Grupos</h2>
                                 <ol class="breadcrumb mb-1">
-                                    <li class="breadcrumb-item">
+                                    <!-- <li class="breadcrumb-item">
                                         <select class="combo-dark" name="search" id="search">
-                                            <option value="1" active>Todos</option>
-                                            <option value="2">Followers</option>
-                                            <option value="3">Following</option>
+                                            <option value="1" <?php echo $op1; ?>>Todos</option>
+                                            <option value="2" <?php echo $op2; ?>>Followers</option>
+                                            <option value="3" <?php echo $op3; ?>>Following</option>
                                         </select>                                        
-                                    </li>
-                                    <li class="breadcrumb-item px-5"><a href="grupos.php"><i class="fas fa-folder-plus" style="color:green"></i>&nbsp;Añadir Grupo</a></li>                                    
+                                    </li> -->
+                                    <li class="breadcrumb-item px-5"><a href="grupos.php">
+                                        <i class="fas fa-folder-plus" style="color:green"></i>&nbsp;Añadir Grupo</a></li>
+                                    <!-- <li class="breadcrumb-item px-2"><a href="usuarios.php">
+                                        <i class="fas fa-people-group" style="color:yellow"></i>&nbsp;Usuarios</a></li> -->
                                 </ol>
                             </div>
                         </div>
@@ -92,95 +118,31 @@
                                 <table id="datatablesSimple">
                                     <thead>
                                         <tr>
-                                            <th>Icon</th>
                                             <th>Grupo</th>
-                                            <th>Miembros</th>
+                                            <th>Icon</th>
                                             <th>⚙️</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>Icon</th>
                                             <th>Grupo</th>
-                                            <th>Miembros</th>
+                                            <th>Icon</th>
                                             <th>⚙️</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <tr>
-                                            <td>🚀</td>
-                                            <td>1er Trabajo</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">10</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🐶</td>
-                                            <td>Primaria</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">29</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🛸</td>
-                                            <td>Secundaria</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">75</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🦄</td>
-                                            <td>Universidad</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">98</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>📲</td>
-                                            <td>React</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">45</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🔑</td>
-                                            <td>Fullstack</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">17</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>☕</td>
-                                            <td>Java</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">37</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🎁</td>
-                                            <td>Trabajo</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">12</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🌮</td>
-                                            <td>RRHH</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">34</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🍟</td>
-                                            <td>Consultoria</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">100</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>👩‍🦰</td>
-                                            <td>Linkedin</td>
-                                            <td>
-                                                <div class="badge badge-pill badge-outline-warning">15</div>
-                                            </td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>🎆</td>
-                                            <td>Pruebas</td>
-                                            <td><div class="badge badge-pill badge-outline-warning">5</div></td>
-                                            <td><a class="about" href="#" title="ver">👁️‍🗨️</a></td>
-                                        </tr>
+                                        
+                                    <?php                                     
+                                        while($data = $resultado->fetch(PDO::FETCH_ASSOC)){                                           
+                                            print "<tr>";
+                                            print "<td>". $data['nombre'] . "</td>";
+                                            print "<td><img src='./assets/icon/".$data['icon']."' alt='icon' width='30px'></td>";
+                                            print "<td>".  
+                                                  "<a class='about' href='grupos.php?g=".$data['id']."' title='ver'>✖️</a>";
+                                                  "</td>";
+                                            print "</tr>";
+                                        }                                            
+                                    ?>
                                     </tbody>    
                                 </table>
                             </div>
@@ -201,8 +163,10 @@
                 </footer>
             </div>
         </div>
+        <script src="./vendor/jquery/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
+        <script src="js/misgrupos.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="js/datatables-simple.js"></script>
     </body>

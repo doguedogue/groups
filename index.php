@@ -32,7 +32,7 @@ if (isset($_GET["q"])){
 }
 
 
-$query = "SELECT min(g.id) id_grupo, min(g.icon) icon,  g.nombre, count(*) registros ".
+$query = "SELECT min(g.id) id_grupo, min(g.icon) icon, g.nombre, count(*) registros ".
         "FROM GRUPO_USUARIO gu, USUARIO u, GRUPO g ".
         "WHERE gu.id_grupo = g.id and ".
         "gu.id_usuario = u.id ".
@@ -165,7 +165,7 @@ $resultado->execute();
                                             print "<td>". $data['nombre'] . "</td>";
                                             print "<td><div class='badge badge-pill badge-outline-warning'>". $data['registros'] . "</div></td>";
                                             print "<td>".  
-                                                  "<a class='about' href='groupos.php?g=".$data['id_grupo']."' title='ver'>👁️‍🗨️</a>";
+                                                  "<a class='about' href='grupos.php?g=".$data['id_grupo']."' title='ver'>👁️‍🗨️</a>";
                                                   "</td>";
                                             print "</tr>";
                                         }                                            
