@@ -72,14 +72,18 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Groups</h1>
- 
                         <div class="card mb-4">
                             <div class="card-body">
+                                <h2>Grupos</h2>
                                 <ol class="breadcrumb mb-1">
-                                    <li class="breadcrumb-item"><a href="index.html?q=1">Grupos</a></li>
-                                    <li class="breadcrumb-item"><a href="index.html?q=2">Followers</a></li>
-                                    <li class="breadcrumb-item"><a href="index.html?q=3">Following</a></li>
+                                    <li class="breadcrumb-item">
+                                        <select class="combo-dark" name="search" id="search">
+                                            <option value="1" active>Todos</option>
+                                            <option value="2">Followers</option>
+                                            <option value="3">Following</option>
+                                        </select>                                        
+                                    </li>
+                                    <li class="breadcrumb-item px-5"><a href="grupos.php"><i class="fas fa-folder-plus" style="color:green"></i>&nbsp;Añadir Grupo</a></li>                                    
                                 </ol>
                             </div>
                         </div>

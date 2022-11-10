@@ -4819,7 +4819,7 @@ textarea.form-control-lg {
   float: left;
   padding-right: 0.5rem;
   color: #6c757d;
-  content: var(--bs-breadcrumb-divider, "/") /* rtl: var(--bs-breadcrumb-divider, "/") */;
+  content: var(--bs-breadcrumb-divider, "") /* rtl: var(--bs-breadcrumb-divider, "/") */;
 }
 .breadcrumb-item.active {
   color: #6c757d;
@@ -11762,4 +11762,9 @@ td, th {
 .badge-outline-warning {
   color: #ffc300;
   border: 1px solid #ffc300;
+}
+
+.combo-dark{
+  background-color: var(--bs-dark-mode);
+  color: var(--bs-body-bg);
 }
