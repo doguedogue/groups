@@ -106,6 +106,7 @@ $resultado->execute();
                             <div class="collapse" id="collapseGrupos" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="grupos.php">Grupos</a>
+                                    <a class="nav-link" href="index.php">Mis Grupos</a>
                                 </nav>
                             </div>
                             
@@ -130,12 +131,14 @@ $resultado->execute();
                                             <option value="3" <?php echo $op3; ?>>Following</option>
                                         </select>                                        
                                     </li>
-                                    &nbsp;
-                                    <button type="button" class="btn btn-success mr-2" id="grupos">
-                                    <span><i class='fas fa-people-group'></i></span>Grupos</button>
-                                    &nbsp;
-                                    <button type="button" class="btn btn-warning mr-2" id="usuarios">
-                                    <span><i class='fas fa-user-group'></i></span>Usuarios</button>
+                                    <li class="breadcrumb-item  mr-2 mb-2">
+                                        <button type="button" class="btn btn-success mr-2" id="grupos">
+                                        <span><i class='fas fa-people-group'></i></span>Grupos</button>
+                                    </li>
+                                    <li class="breadcrumb-item  mr-2 mb-2">
+                                        <button type="button" class="btn btn-info mr-2" id="usuarios">
+                                        <span><i class='fas fa-user-group'></i></span>Usuarios</button>
+                                    </li>
                                 </ol>
                             </div>
                         </div>

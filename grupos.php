@@ -85,6 +85,7 @@ $resultado->execute();
                             <div class="collapse" id="collapseGrupos" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="grupos.php">Grupos</a>
+                                    <a class="nav-link" href="index.php">Mis Grupos</a>
                                 </nav>
                             </div>
                             
@@ -102,13 +103,18 @@ $resultado->execute();
                             <div class="card-body">
                                 <h2>Grupos</h2>
                                 <ol class="breadcrumb mb-1">
-
-                                <button type="button" class="btn btn-primary mr-3" data-toggle='modal' 
-                                    data-target='#createModal' data-id='' data-nombre='' data-icon=''>
-                                    <span><i class='fas fa-plus'></i></span> Añadir Grupo</button>
+                                    <li class="breadcrumb-item  mr-2 mb-2">
+                                        <button type="button" class="btn btn-primary mr-3" data-toggle='modal' 
+                                            data-target='#createModal' data-id='' data-nombre='' data-icon=''>
+                                            <span><i class='fas fa-plus'></i></span> Añadir Grupo</button>
+                                    </li>
+                                    <li class="breadcrumb-item  mr-2 mb-2">
+                                        <button type="button" class="btn btn-info mr-2" id="usuarios">
+                                        <span><i class='fas fa-user-group'></i></span>Usuarios</button>
+                                    </li>
                                 </ol>
                             </div>
-                        </div>
+                        </div>                        
                         <div class="card mb-4">
                             <div class="card-body">
                                 <table id="datatablesSimple">

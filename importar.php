@@ -62,6 +62,7 @@
                             <div class="collapse" id="collapseGrupos" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="grupos.php">Grupos</a>
+                                    <a class="nav-link" href="index.php">Mis Grupos</a>
                                 </nav>
                             </div>
                             
@@ -82,15 +83,28 @@
                         </div>
                         <div class="card mb-4">
                             <div class="card-body">
+                                <ol class="breadcrumb mb-1">
+                                    <li class="breadcrumb-item  mr-2 mb-2">
+                                        <button type="button" class="btn btn-success mr-2" id="grupos">
+                                        <span><i class='fas fa-people-group'></i></span>Grupos</button>
+                                    </li>
+                                    <li class="breadcrumb-item  mr-2 mb-2">
+                                        <button type="button" class="btn btn-info mr-2" id="usuarios">
+                                        <span><i class='fas fa-user-group'></i></span>Usuarios</button>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-body">
                             <ol class="breadcrumb mb-1">
-                                    <li class="breadcrumb-item  mr-2">
+                                    <li class="breadcrumb-item mr-2 mb-2">
                                         <select class="form-control combo-dark" name="import_select" id="import_select">
                                             <option value="Followers" selected>Followers</option>
                                             <option value="Following">Following</option>
                                         </select>                                        
                                     </li>
-                                    &nbsp;
-                                    <li class="breadcrumb-item  mr-2">
+                                    <li class="breadcrumb-item mr-2 mb-2">
                                         <select class="form-control combo-dark" name="cantidad" id="cantidad">
                                             <option value="1" selected>1 Página</option>
                                             <option value="5">5 Páginas</option>
@@ -107,13 +121,15 @@
                                             <option value="0">Todos</option>
                                         </select>
                                     </li>
-                                    &nbsp;
-                                    <button type="button" class="btn btn-warning mr-3" id="importar">
-                                        <span><i class='fa-solid fa-right-to-bracket'></i></span>&nbsp;Importar</button>
+                                    <li class="breadcrumb-item mr-2 mb-2">
+                                        <button type="button" class="btn btn-warning mr-3" id="importar">
+                                            <span><i class='fa-solid fa-right-to-bracket'></i></span>&nbsp;Importar</button>
+                                    </li>
                                 </ol>
                             </div>
                         </div>
-                        <div class="card mb-4" id="div_resultados">
+                        
+                        <div class="card mb-4" id="div_resultados" style="display: none;">
                             <div class="card-body">
                                 <ol class="breadcrumb mb-1">
                                     <li class="breadcrumb-item  mr-2">
@@ -141,7 +157,7 @@
                                     </li>
                                     <li class="breadcrumb-item mr-2 mb-2">
                                         <div>
-                                            <button type="button" class="btn btn-info mr-3" id="test">
+                                            <button type="button" class="btn btn-danger mr-3" id="test">
                                                     <span><i class="fa-solid fa-flask-vial"></i></span>&nbsp;TEST</button>
                                         </div>
                                     </li>
@@ -173,9 +189,9 @@
         <script type="module">
             import { request } from "https://cdn.skypack.dev/@octokit/request";
 
-            $(document).ready(function () {
-                document.getElementById('div_resultados').style.display = 'none';
-            });
+            // $(document).ready(function () {
+            //     document.getElementById('div_resultados').style.display = 'none';
+            // });
 
             $('#importar').click(function () {
 
@@ -198,7 +214,9 @@
                             "<b>Páginas para procesar: </b> " + cantidad
                         );
 
+                        //Show Messages
                         document.getElementById('div_resultados').style.display = 'block';
+
                         if (import_select === "Followers"){
                             followers();
                         }else if (import_select === "Following"){
@@ -208,10 +226,6 @@
                     }
                 });
 
-            });
-
-            $('#test').click(function () {
-                hola();
             });
 
             async function followers(){
@@ -260,7 +274,7 @@
 
             async function getUser(username){
                 const  outputDiv = document.getElementById("message");
-                console.log("getUser("+username+")");
+                // console.log("getUser("+username+")");
 
                 const result = await request("GET /users/{username}", {
                     headers: {
@@ -269,9 +283,8 @@
                     username,           
                 });
 
-                console.log("Resultado: " + JSON.stringify(result));
                 var data = result.data;
-                console.log("Data: " + JSON.stringify(data));
+                // console.log("Data: " + JSON.stringify(data));
 
                 const login = JSON.stringify(data.login).replaceAll('"','');
                 const name = JSON.stringify(data.name).replaceAll('"','');
@@ -284,6 +297,7 @@
                 const twitter_username = JSON.stringify(data.twitter_username).replaceAll('"','');
                 const follower = 1;
                 const following = 0;
+                const id = "";
 
                 outputDiv.innerHTML += "<br>********** Información del usuario >**********<hr> "+
                     "login: " + login + 
@@ -298,8 +312,35 @@
                     "<br> follower: " + follower + 
                     "<br> following: " + following;
 
+                $.ajax({
+                    url: "./bd/usuarios_alta.php",
+                    type: "POST",
+                    datatype: "json",
+                    data: {
+                        id,
+                        login,
+                        name,
+                        avatar_url,
+                        email,
+                        company,
+                        blog,
+                        location,
+                        bio,
+                        twitter_username,
+                        follower,
+                        following
+                    },
+                    success: function (data) {
+                        console.log("out php: " + data);                    
+                    }
+                });                    
+
             }
             
+            $('#test').click(function () {
+                hola();
+            });
+
             async function hola(){
                 const  outputDiv = document.getElementById("msg_test");
                 outputDiv.innerHTML += "<br>Leyendo...";
@@ -324,6 +365,7 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
+        <script src="js/importar.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="js/datatables-simple.js"></script>        
         <script src="./vendor/sweetalert2/dist/sweetalert2.min.js"></script>

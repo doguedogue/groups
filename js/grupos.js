@@ -1,6 +1,9 @@
 (function () {
     'use strict';
-
+    $('#usuarios').click(function () {
+        window.location.href = "./usuarios.php";
+    });
+    
     $('#createModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget)
         const id = button.data('id');

@@ -5,10 +5,13 @@
         const search = $.trim($('#search option:selected').val());
         window.location.href = "./usuarios.php?q="+search;
     });
-
     
     $('#importar').click(function () {
         window.location.href = "./importar.php";
+    });
+
+    $('#grupos').click(function () {
+        window.location.href = "./grupos.php";
     });
 
     $('#createModal').on('show.bs.modal', function (event) {
