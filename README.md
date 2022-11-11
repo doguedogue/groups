@@ -1,7 +1,7 @@
 <img align='right' src="/assets/img/logo.png" alt="logo" width="150px"/>
 <h1>Groups 📲🚀</h1>
 
-🌏 [Inglés](https://github.com/doguedogue/groups/edit/main/README.en.md) | [Español](https://github.com/doguedogue/groups/edit/main/README.md)
+🌏 [Inglés](https://github.com/doguedogue/groups/blob/main/README.en.md) | [Español](https://github.com/doguedogue/groups/edit/main/README.md)
 
 ## Una herramienta para agrupar tus contactos de GitHub:tm:
 
