@@ -341,11 +341,11 @@
                         } else if(data == "null" || data.includes("Nuevo")) {
                             outputDiv.innerHTML += "<br>"+ login + " (Nuevo)";
                             nuevo++;
-                        }if(data == "null" || data.includes("Existe")) {
+                        }else if(data == "null" || data.includes("Existe")) {
                             outputDiv.innerHTML += "<br>"+ login + " (Existente)";
                             existe++;
                         }else{
-                            outputDiv.innerHTML += "<br>"+ login + " (Error2) - "+ data;
+                            outputDiv.innerHTML += "<br>"+ login + " (Otro)";
                             otros++;
                         } 
                     }
