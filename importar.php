@@ -122,6 +122,10 @@
                                         </select>
                                     </li>
                                     <li class="breadcrumb-item mr-2 mb-2">
+                                        <input type="number" class="col-sm-1 form-control combo-dark" 
+                                            id="page" name="page" min="1" title="Seleccione el número de página">
+                                    </li>
+                                    <li class="breadcrumb-item mr-2 mb-2">
                                         <button type="button" class="btn btn-warning mr-3" id="importar">
                                             <span><i class='fa-solid fa-right-to-bracket'></i></span>&nbsp;Importar</button>
                                     </li>
@@ -201,11 +205,21 @@
             $('#importar').click(function () {
 
                 const import_select = $.trim($('#import_select option:selected').val());
-                const cantidad = $.trim($('#cantidad option:selected').val());
+                let cantidad = $.trim($('#cantidad option:selected').val());
+                const page = $.trim($('#page').val());
+
+                console.log("Page: "+page+ " Cantidad: "+cantidad);
+                
+                let pregunta = "";
+                if (page!= null && page.length>0){
+                    pregunta = "la página " + page + " de "+ import_select;
+                }else{
+                    pregunta = cantidad +" página(s) de "+ import_select;
+                }             
 
                 Swal.fire({
                     title: "Seguro que desea importar?",
-                    text:  cantidad +" página(s) de "+ import_select,
+                    text:  pregunta,
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -214,9 +228,16 @@
                     confirmButtonText: 'Importar'
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        let texto = "";
+                        if (page!= null && page.length>0){                            
+                            texto = "<b>Páginas para procesar: 1</b>";
+                            texto += "<br><b>Se procesa solo la página " + page + "</b>";
+                            cantidad = 1;
+                        }else{
+                            texto = "<b>Páginas para procesar: </b> " + cantidad;
+                        }   
                         $("#message").html(
-                            "<b>Importar: </b> " + import_select + "<br>" +
-                            "<b>Páginas para procesar: </b> " + cantidad
+                            "<b>Importar: </b> " + import_select + "<br>" + texto
                         );
 
                         nuevo = 0;
@@ -228,22 +249,22 @@
                         document.getElementById('div_resultados').style.display = 'block';
 
                         if (import_select === "Followers"){
-                            importUsuarios(1,0,"followers");
+                            importUsuarios(1,0,"followers", page, cantidad);
                         }else if (import_select === "Following"){
-                            importUsuarios(0,1,"following");
+                            importUsuarios(0,1,"following", page, cantidad);
                         }                        
                     }
                 });
 
             });
 
-            async function importUsuarios(_follower, _following, api){
+            async function importUsuarios(_follower, _following, api, page, cantidad){
                 const  outputDiv = document.getElementById("message");
                 outputDiv.innerHTML += "<br>Leyendo...";
         
                 let usuarios_array = new Array();
-                let current_page = 1;
-                const MAX_NUMBER_OF_IMPORTS_PAGES = $.trim($('#cantidad option:selected').val());
+                let current_page = (page!= null && page.length > 0)? page : 1;
+                const MAX_NUMBER_OF_IMPORTS_PAGES = cantidad;
 
                 do {
                     const result = await request("GET /user/"+api, {
@@ -278,7 +299,9 @@
                 //     usuarios_html += usuarios_array[i] + "<br>"
                 // }
 
-                outputDiv.innerHTML += '<br>Número de '+ (api[0].toUpperCase() + api.substring(1)) +': '+usuarios_array.length;
+                outputDiv.innerHTML += '<br>Número de '+ (api[0].toUpperCase() + api.substring(1)) +': '+usuarios_array.length + "<br>" +
+                                        ((page!=null && page.length>0)?"Página: "+page: "") + 
+                                        " Cantidad: "+cantidad;
                 
                 //await
                 // "<hr>"+ 
