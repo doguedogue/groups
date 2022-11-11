@@ -47,6 +47,12 @@ $query = "SELECT id, login, name, avatar_url, ".
 $resultado = $conexion->prepare($query);
 $resultado->execute();
 
+
+$query2 = "SELECT id, nombre, icon ".
+        "FROM GRUPO ".
+        "ORDER BY nombre";
+$resultado2 = $conexion->prepare($query2);
+$resultado2->execute();
 ?>
 
 
@@ -132,7 +138,7 @@ $resultado->execute();
                     <div class="container-fluid px-4">
                         <div class="card mb-4">
                             <div class="card-body">
-                                <h2>Usuarios</h2>
+                                <h2>Detalle Grupos</h2>
                                 <ol class="breadcrumb mb-1">
                                     <li class="breadcrumb-item  mr-2 mb-2">
                                         <select class="form-control combo-dark" name="search" id="search">
@@ -141,16 +147,7 @@ $resultado->execute();
                                             <option value="3" <?php echo $op3; ?>>Following</option>
                                         </select>                                        
                                     </li>
-                                    
-                                    <li class="breadcrumb-item  mr-2 mb-2">
-                                        <button type="button" class="btn btn-primary mr-3" data-toggle='modal' 
-                                            data-target='#createModal' data-id='' data-nombre='' data-icon=''>
-                                            <span><i class='fas fa-plus'></i></span> Añadir Usuario</button>
-                                    </li>                                    
-                                    <li class="breadcrumb-item  mr-2 mb-2">
-                                        <button type="button" class="btn btn-secondary mr-3" id="importar">
-                                            <span><i class='fa-solid fa-right-to-bracket'></i></span>&nbsp;Importar</button>
-                                    </li>   
+                                                                    
                                     <li class="breadcrumb-item  mr-2 mb-2">
                                         <button type="button" class="btn btn-success mr-2" id="grupos">
                                             <span><i class='fas fa-people-group'></i></span>Grupos</button>
@@ -158,6 +155,24 @@ $resultado->execute();
                                 </ol>
                             </div>
                         </div>
+                        <div class="card mb-4">
+                            <div class="card-body">                                
+                                <ol class="breadcrumb mb-1">
+                                    <li class="breadcrumb-item  mr-2 mb-2">
+                                        <select class="form-control combo-dark" name="grupos_select" id="grupos_select">
+                                        <?php
+                                            $i = 1;                                                                             
+                                            while($data2 = $resultado2->fetch(PDO::FETCH_ASSOC)){                                           
+                                                $selected = ($i==1)?"selected":"";
+                                                print "<option value='".$data2['id']."' ".$selected.">".$data2['icon']." ".$data2['nombre']."</option>";
+                                                $i += 1;
+                                            }                                            
+                                        ?>
+                                        </select>                                        
+                                    </li>
+            
+                                </ol>
+                            </div>
                         <div class="card mb-4">
                             <div class="card-body">
                                 <table id="datatablesSimple">
@@ -229,120 +244,6 @@ $resultado->execute();
             </div>
         </div>
 
-        <!-- Modal Delete -->
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modalLabelDelete"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content bg-dark">
-                    <form id="formUsuariosEliminar">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalLabelDelete"><span><i class='fas fa-trash'></i></span>&nbsp;Eliminar Usuario</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">Seguro que desea eliminar el Usuario?</div>
-                        <input type="text" class="form-control" id="id_borrar" hidden>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <input  type="submit" class="btn btn-danger" value="Borrar">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal Create/Update -->
-        <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="modalLabelCreate" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content bg-dark">
-                    <form id="formUsuariosCrear">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalLabelCreate">Nuevo Usuario</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <input type="text" class="form-control" id="id_usuario_update" hidden>
-                            <div class="form-group row mb-2">                                                            
-                                <div class="col-sm-12 text-center">
-                                    <img src="./assets/img/logo.png" alt="avatar" width="100px" class="avatar" id="img_avatar">
-                                </div>
-                            </div>
-                            <div class="form-group row">                            
-                                <label for="login" class="col-sm-3 col-form-label">Username</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="login" placeholder="Username" required>
-                                </div>
-                            </div>    
-                            <div class="form-group row">                            
-                                <label for="name" class="col-sm-3 col-form-label">Nombre</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="name" placeholder="Nombre">
-                                </div>
-                            </div> 
-                            <div class="form-group row">                            
-                                <label for="email" class="col-sm-3 col-form-label">Email</label>
-                                <div class="col-sm-8">
-                                    <input type="email" class="form-control" id="email" placeholder="Email">
-                                </div>
-                            </div> 
-                            <div class="form-group row">                            
-                                <label for="avatar_url" class="col-sm-3 col-form-label">URL Imagen</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="avatar_url" placeholder="URL Imagen">
-                                </div>
-                            </div> 
-                            <div class="form-group row">                            
-                                <label for="company" class="col-sm-3 col-form-label">Compañia</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="company" placeholder="Compañia">
-                                </div>
-                            </div> 
-                            <div class="form-group row">                            
-                                <label for="blog" class="col-sm-3 col-form-label">Página Web</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="blog" placeholder="Página Web">
-                                </div>
-                            </div>    
-                            <div class="form-group row">                            
-                                <label for="bio" class="col-sm-3 col-form-label">Descripción</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="bio" placeholder="Descripción">
-                                </div>
-                            </div>
-                            <div class="form-group row">                            
-                                <label for="location" class="col-sm-3 col-form-label">Ubicación</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="location" placeholder="Ubicación">
-                                </div>
-                            </div>
-                            <div class="form-group row">                            
-                                <label for="twitter_username" class="col-sm-3 col-form-label">Twitter</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="twitter_username" placeholder="Twitter">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-1">
-                                    <input class="form-check-input" type="checkbox" value="" id="follower">
-                                </div>
-                                <label class="col-sm-2 form-check-label" for="follower">Follower</label>
-                                <div class="col-sm-1">
-                                    <input class="form-check-input" type="checkbox" value="" id="following">
-                                </div>
-                                <label class="col-sm-2 form-check-label" for="following">Following</label>
-                            </div>                           
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <input  type="submit" class="btn btn-success" value="Crear" id="boton_crear">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
 
         <!-- Bootstrap core JavaScript-->
         <script src="./vendor/jquery/jquery.min.js"></script>
@@ -353,7 +254,7 @@ $resultado->execute();
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
-        <script src="js/usuarios.js"></script>
+        <script src="js/detallegrupo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="js/datatables-simple.js"></script>        
         <script src="./vendor/sweetalert2/dist/sweetalert2.min.js"></script>

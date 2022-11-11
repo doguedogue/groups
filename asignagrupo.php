@@ -5,43 +5,59 @@ include_once './bd/conexion.php';
 $objconexion = new Conexion();
 $conexion = $objconexion->Conectar();
 
-$query_where = "and true ";
+$query_where = "WHERE true ";
+if (isset($_GET["u"]) && preg_match("/^[0-9]+$/", $_GET["u"])){
+    $int = intval($_GET['u']);
+    $query_where = "WHERE u.id = ".$int." ";
+}
+
+$query_where_q = "and true ";
 $op1 = "";
 $op2 = "";
 $op3 = "";
 if (isset($_GET["q"])){
     switch($_GET["q"]){
         case "1":
-            $query_where = "and true ";
+            $query_where_q = "and true ";
             $op1 = "selected";
             break;
         case "2":
-            $query_where = "and u.follower = 1 ";
+            $query_where_q = "and u.follower = 1 ";
             $op2 = "selected";
             break;
         case "3":
-            $query_where = "and u.following = 1 ";
+            $query_where_q = "and u.following = 1 ";
             $op3 = "selected";
             break;
         default:
-            $query_where = "and true ";    
+            $query_where_q = "and true ";    
             $op1 = "selected";
     }
 }else{
     $op1 = "selected";
 }
 
-
-$query = "SELECT min(g.id) id_grupo, min(g.icon) icon, g.nombre, count(*) registros ".
-        "FROM GRUPO_USUARIO gu, USUARIO u, GRUPO g ".
-        "WHERE gu.id_grupo = g.id and ".
-        "gu.id_usuario = u.id ".
+$query = "SELECT u.id, u.login, u.name, u.avatar_url, ".
+        "u.email, u.company, u.blog, u.location, u.bio, u.twitter_username, ".
+        "u.follower, u.following, ".
+        "(SELECT group_concat(concat(g.icon , ' ' , g.nombre) order by 1 asc separator ', ') ".
+        "from grupo_usuario gu, grupo g ".
+        "where gu.id_grupo = g.id and gu.id_usuario = u.id) grupos_asignado ".
+        "FROM USUARIO u ".
         $query_where.
-        "group by g.nombre ".
-        "ORDER BY g.nombre";
+        $query_where_q.
+        "ORDER BY name";
 $resultado = $conexion->prepare($query);
 $resultado->execute();
 
+
+
+
+$query2 = "SELECT id, nombre, icon ".
+        "FROM GRUPO ".
+        "ORDER BY nombre";
+$resultado2 = $conexion->prepare($query2);
+$resultado2->execute();
 ?>
 
 
@@ -56,7 +72,16 @@ $resultado->execute();
         <title>Groups</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
-        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>   
+        
+        <link rel="stylesheet" href="./vendor/sweetalert2/dist/dark.css" />
+        <link rel="stylesheet" href="./css/select_style.css" />
+
+        
+        <!-- Custom styles for this page -->
+        <!-- <link href="./vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> -->
+
+
         <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
     </head>
     <body class="sb-nav-fixed">
@@ -124,7 +149,7 @@ $resultado->execute();
                     <div class="container-fluid px-4">
                         <div class="card mb-4">
                             <div class="card-body">
-                                <h2>Mis Grupos</h2>
+                                <h2>Asigna Grupos</h2>
                                 <ol class="breadcrumb mb-1">
                                     <li class="breadcrumb-item  mr-2 mb-2">
                                         <select class="form-control combo-dark" name="search" id="search">
@@ -140,45 +165,71 @@ $resultado->execute();
                                     <li class="breadcrumb-item  mr-2 mb-2">
                                         <button type="button" class="btn btn-info mr-2" id="usuarios">
                                         <span><i class='fas fa-user-group'></i></span>Usuarios</button>
+                                    </li>                                 
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-body">                                
+                                <ol class="breadcrumb mb-1">
+                                    <li class="breadcrumb-item  mr-2 mb-2">
+                                        <select class="form-control combo-dark" name="grupos_select" id="grupos_select">
+                                        <?php
+                                            $i = 1;                                                                             
+                                            while($data2 = $resultado2->fetch(PDO::FETCH_ASSOC)){                                           
+                                                $selected = ($i==1)?"selected":"";
+                                                print "<option value='".$data2['id']."' ".$selected.">".$data2['icon']." ".$data2['nombre']."</option>";
+                                                $i += 1;
+                                            }                                            
+                                        ?>
+                                        </select>                                        
                                     </li>
+  
+                                    <li class="breadcrumb-item  mr-2 mb-2">
+                                        <button type="button" class="btn btn-primary mr-2" id="button">
+                                            <span><i class="fa-solid fa-layer-group"></i></span>Asigna</button>
+                                    </li>                                    
                                 </ol>
                             </div>
                         </div>
                         <div class="card mb-4">
                             <div class="card-body">
-                                <table id="datatablesSimple">
-                                    <thead>
-                                        <tr>
-                                            <th>Icon</th>
-                                            <th>Grupo</th>
-                                            <th>Miembros</th>
-                                            <th>⚙️</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Icon</th>
-                                            <th>Grupo</th>
-                                            <th>Miembros</th>
-                                            <th>⚙️</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        
-                                    <?php                                     
-                                        while($data = $resultado->fetch(PDO::FETCH_ASSOC)){                                           
-                                            print "<tr>";
-                                            print "<td style='font-size:27px;'>". $data['icon'] . "</td>";
-                                            print "<td>". $data['nombre'] . "</td>";
-                                            print "<td><div class='badge badge-pill badge-outline-warning'>". $data['registros'] . "</div></td>";
-                                            print "<td>".  
-                                                  "<a class='about' href='grupos.php?g=".$data['id_grupo']."' title='ver'>👁️‍🗨️</a>";
-                                                  "</td>";
-                                            print "</tr>";
-                                        }                                            
-                                    ?>
-                                    </tbody>    
-                                </table>
+                                <div >
+                                    <table class="table table-bordered" width="100%" cellspacing="0" id="dataTablesUsuarios">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Imagen</th>
+                                                <th>Username</th>
+                                                <th>Nombre</th>
+                                                <th>Grupos</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Imagen</th>
+                                                <th>Username</th>
+                                                <th>Nombre</th>
+                                                <th>Grupos</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                            
+                                        <?php                                                                             
+                                            while($data = $resultado->fetch(PDO::FETCH_ASSOC)){                                           
+                                                print "<tr>";
+                                                print "<td>". $data['id'] . "</td>";
+                                                print "<td><img src='". $data['avatar_url'] ."' alt='avatar' width='40px' class='avatar'></td>";
+                                                print "<td>". $data['login'] . "</td>";
+                                                print "<td>". $data['name'] . "</td>";                                                                 
+                                                print "<td>". $data['grupos_asignado'] . "</td>";                                                                 
+                                                print "</tr>";
+                                            }                                            
+                                        ?>
+                                        </tbody>    
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -197,11 +248,26 @@ $resultado->execute();
                 </footer>
             </div>
         </div>
+
+        <!-- Bootstrap core JavaScript-->
         <script src="./vendor/jquery/jquery.min.js"></script>
+        <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        
+        <!-- Core plugin JavaScript-->
+        <script src="./vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- Page level plugins -->
+        <script src="./vendor/datatables/jquery.dataTables.min.js"></script>
+        <script src="./vendor/datatables/dataTables.bootstrap4.min.js"></script>
+            
+        <!-- Page level custom scripts -->
+        <script src="./js/datatables.js"></script>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
-        <script src="js/misgrupos.js"></script>
+        <script src="js/asignagrupo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple.js"></script>
+        <script src="js/datatables-simple.js"></script>        
+        <script src="./vendor/sweetalert2/dist/sweetalert2.min.js"></script>
     </body>
 </html>
