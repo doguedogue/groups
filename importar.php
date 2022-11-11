@@ -150,16 +150,8 @@
                                 <ol class="breadcrumb mb-1 d-flex flex-column">
                                     <li class="breadcrumb-item mr-2 mb-2">
                                         <p><b>NOTA:</b> Para la conexión con <span style="color:#be1e2d;">GitHub&trade;</span> 
-                                            es necesario que cuente con su token personal de acceso
-                                            <a href="https://github.com/settings/tokens">aquí</a>
+                                            es necesario que cuente con su token personal de acceso                                          
                                         </p>
-                                    </li>
-                                    <li class="breadcrumb-item mr-2 mb-2">
-                                        <div>
-                                            <a href="https://github.com/settings/tokens">
-                                                <img src="./assets/img/configura_token.png" alt="configuración de token" width="250px">                            
-                                            </a>
-                                        </div>
                                     </li>
                                     <li class="breadcrumb-item mr-2 mb-2">
                                         <div>
