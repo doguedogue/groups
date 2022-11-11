@@ -193,10 +193,6 @@
         <script type="module">
             import { request } from "https://cdn.skypack.dev/@octokit/request";
 
-            // $(document).ready(function () {
-            //     document.getElementById('div_resultados').style.display = 'none';
-            // });
-
             var nuevo = 0;
             var existe = 0;
             var error = 0;
@@ -275,15 +271,9 @@
                     });
             
                     var data = result.data;                    
-                    // let i=1;
                     for (let key in data) {
                         const username = JSON.stringify(data[key].login).replaceAll('"','');
-                        
-                        let salida = "";
-                        // if (i<=18){
                         getUser(username, _follower, _following);                           
-                        // }
-                        // i++;
                         usuarios_array.push(username);
                     }
                     
@@ -294,26 +284,13 @@
 
                 } while(data.length > 0 && current_page <= MAX_NUMBER_OF_IMPORTS_PAGES);
 
-                // let usuarios_html = "";
-                // for (let i in usuarios_array) {                
-                //     usuarios_html += usuarios_array[i] + "<br>"
-                // }
-
                 outputDiv.innerHTML += '<br>Número de '+ (api[0].toUpperCase() + api.substring(1)) +': '+usuarios_array.length + "<br>" +
                                         ((page!=null && page.length>0)?"Página: "+page: "") + 
                                         " Cantidad: "+cantidad;
-                
-                //await
-                // "<hr>"+ 
-                // "<br>Errores: "+ error +
-                // "<br>Nuevos: "+ nuevo +
-                // "<br>Existen: "+ existe +
-                // "<br>Otros: "+ otros;
             }
 
             async function getUser(username, _follower, _following){
                 const  outputDiv = document.getElementById("message");
-                // console.log("getUser("+username+")");
 
                 const result = await request("GET /users/{username}", {
                     headers: {
@@ -323,7 +300,6 @@
                 });
 
                 var data = result.data;
-                // console.log("Data: " + JSON.stringify(data));
                 
                 const id = "";
                 const login = JSON.stringify(data.login).replaceAll('"','');
@@ -390,7 +366,6 @@
                     },           
                 });
 
-                // console.log("Result, %s", JSON.stringify(result));
                 outputDiv.innerHTML += '<br>Hola, '+ result.data.name + " ("+result.data.login+")<br>Prueba OK";
             }
         </script>       
