@@ -193,6 +193,11 @@
             //     document.getElementById('div_resultados').style.display = 'none';
             // });
 
+            var nuevo = 0;
+            var existe = 0;
+            var error = 0;
+            var otros = 0;
+
             $('#importar').click(function () {
 
                 const import_select = $.trim($('#import_select option:selected').val());
@@ -214,47 +219,51 @@
                             "<b>Páginas para procesar: </b> " + cantidad
                         );
 
+                        nuevo = 0;
+                        existe = 0;
+                        error = 0;
+                        otros = 0;
+
                         //Show Messages
                         document.getElementById('div_resultados').style.display = 'block';
 
                         if (import_select === "Followers"){
-                            followers();
+                            importUsuarios(1,0,"followers");
                         }else if (import_select === "Following"){
-                            //TODO
-                            //following();
+                            importUsuarios(0,1,"following");
                         }                        
                     }
                 });
 
             });
 
-            async function followers(){
+            async function importUsuarios(_follower, _following, api){
                 const  outputDiv = document.getElementById("message");
                 outputDiv.innerHTML += "<br>Leyendo...";
         
-                let followers = new Array();
+                let usuarios_array = new Array();
                 let current_page = 1;
                 const MAX_NUMBER_OF_IMPORTS_PAGES = $.trim($('#cantidad option:selected').val());
 
                 do {
-                    const result = await request("GET /user/followers", {
+                    const result = await request("GET /user/"+api, {
                         headers: {
                             authorization: "token <?php echo getenv('groups_token'); ?>",
                         },
                         page: current_page,           
                     });
             
-                    var data = result.data;
-                    let i=1;
+                    var data = result.data;                    
+                    // let i=1;
                     for (let key in data) {
                         const username = JSON.stringify(data[key].login).replaceAll('"','');
-                        followers.push(username);
-
-                        //TODO quitar
-                        if (i==1){
-                            getUser(username);
-                        }
-                        i++;
+                        
+                        let salida = "";
+                        // if (i<=18){
+                        getUser(username, _follower, _following);                           
+                        // }
+                        // i++;
+                        usuarios_array.push(username);
                     }
                     
                     if (current_page % 10 == 0 ){
@@ -264,15 +273,22 @@
 
                 } while(data.length > 0 && current_page <= MAX_NUMBER_OF_IMPORTS_PAGES);
 
-                let usuarios_html = "";
-                for (let i in followers) {                
-                    usuarios_html += followers[i] + "<br>"
-                }
+                // let usuarios_html = "";
+                // for (let i in usuarios_array) {                
+                //     usuarios_html += usuarios_array[i] + "<br>"
+                // }
 
-                outputDiv.innerHTML += '<br>Número de Followers: '+followers.length + "<br><hr>"+ usuarios_html;
+                outputDiv.innerHTML += '<br>Número de '+ (api[0].toUpperCase() + api.substring(1)) +': '+usuarios_array.length;
+                
+                //await
+                // "<hr>"+ 
+                // "<br>Errores: "+ error +
+                // "<br>Nuevos: "+ nuevo +
+                // "<br>Existen: "+ existe +
+                // "<br>Otros: "+ otros;
             }
 
-            async function getUser(username){
+            async function getUser(username, _follower, _following){
                 const  outputDiv = document.getElementById("message");
                 // console.log("getUser("+username+")");
 
@@ -285,7 +301,8 @@
 
                 var data = result.data;
                 // console.log("Data: " + JSON.stringify(data));
-
+                
+                const id = "";
                 const login = JSON.stringify(data.login).replaceAll('"','');
                 const name = JSON.stringify(data.name).replaceAll('"','');
                 const email = JSON.stringify(data.email).replaceAll('"','');
@@ -295,25 +312,11 @@
                 const location = JSON.stringify(data.location).replaceAll('"','');
                 const bio = JSON.stringify(data.bio).replaceAll('"','');
                 const twitter_username = JSON.stringify(data.twitter_username).replaceAll('"','');
-                const follower = 1;
-                const following = 0;
-                const id = "";
-
-                outputDiv.innerHTML += "<br>********** Información del usuario >**********<hr> "+
-                    "login: " + login + 
-                    "<br> name: " + name + 
-                    "<br> email: " + email + 
-                    "<br> avatar_url: " + avatar_url + 
-                    "<br> company: " + company + 
-                    "<br> blog: " + blog + 
-                    "<br> location: " + location + 
-                    "<br> bio: " + bio + 
-                    "<br> twitter_username: " + twitter_username + 
-                    "<br> follower: " + follower + 
-                    "<br> following: " + following;
+                const follower = _follower;
+                const following = _following;
 
                 $.ajax({
-                    url: "./bd/usuarios_alta.php",
+                    url: "./bd/usuarios_import.php",
                     type: "POST",
                     datatype: "json",
                     data: {
@@ -331,7 +334,20 @@
                         following
                     },
                     success: function (data) {
-                        console.log("out php: " + data);                    
+                        console.log("out php: " + data);                        
+                        if(data == "null" || data.includes("Error")) {
+                            outputDiv.innerHTML += "<br>"+ login + " (Error)";
+                            error++;
+                        } else if(data == "null" || data.includes("Nuevo")) {
+                            outputDiv.innerHTML += "<br>"+ login + " (Nuevo)";
+                            nuevo++;
+                        }if(data == "null" || data.includes("Existe")) {
+                            outputDiv.innerHTML += "<br>"+ login + " (Existente)";
+                            existe++;
+                        }else{
+                            outputDiv.innerHTML += "<br>"+ login + " (Error2) - "+ data;
+                            otros++;
+                        } 
                     }
                 });                    
 
