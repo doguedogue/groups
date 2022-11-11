@@ -74,7 +74,7 @@
                     <div class="container-fluid px-4">
                         <div class="card mb-4">
                             <div class="card-body">
-                                <h2>Importar Usuarios <br>Follow(ers|ing) de <span style="color:crimson;">GitHub&trade;</span></h2>                                
+                                <h2>Importar Usuarios Follow(ers|ing) de <span style="color:#be1e2d;">GitHub&trade;</span></h2>                                
                             </div>
                         </div>
                         <div class="card mb-4">
@@ -106,6 +106,33 @@
                                 </ol>
                             </div>
                         </div>
+                        <div class="card mb-4" id="div_resultados">
+                            <div class="card-body">
+                                <ol class="breadcrumb mb-1">
+                                    <li class="breadcrumb-item  mr-2">
+                                        <p><b>RESULTADOS DE IMPORTACIÓN</b></p>
+                                        <p id="message"></p>
+                                    </li>                                    
+                                </ol>                              
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <ol class="breadcrumb mb-1">
+                                    <li class="breadcrumb-item  mr-2">
+                                        <p><b>NOTA:</b> Para la conexión con <span style="color:#be1e2d;">GitHub&trade;</span> 
+                                            es necesario que cuente con su token personal de acceso
+                                            <a href="https://github.com/settings/tokens">aquí</a>
+                                        </p>
+                                    </li>      
+                                    
+                                    
+                                </ol>
+                                <a href="https://github.com/settings/tokens">
+                                    <img src="./assets/img/configura_token.png" alt="configuración de token" width="250px">                            
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </main>
                 <footer class="py-2 foooter-dark mt-auto">
@@ -122,6 +149,14 @@
                 </footer>
             </div>
         </div>
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="./vendor/jquery/jquery.min.js"></script>
+        <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        
+        <!-- Core plugin JavaScript-->
+        <script src="./vendor/jquery-easing/jquery.easing.min.js"></script>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="js/importar.js"></script>
