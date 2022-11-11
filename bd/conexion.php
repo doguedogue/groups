@@ -11,9 +11,9 @@ class Conexion{
         $opciones = array(
                         PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
                         //azure
-                        //,
-                        //PDO::MYSQL_ATTR_SSL_CA => $OS ? 'c:/path/to/cacert.pem' : '',
-                        //PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+                        ,
+                        PDO::MYSQL_ATTR_SSL_CA => $OS ? 'c:/path/to/cacert.pem' : '',
+                        PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
                     );
 
         try {
