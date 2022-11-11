@@ -5,10 +5,11 @@ include_once './bd/conexion.php';
 $objconexion = new Conexion();
 $conexion = $objconexion->Conectar();
 
-$query_where = "WHERE true ";
-if (isset($_GET["u"]) && preg_match("/^[0-9]+$/", $_GET["u"])){
-    $int = intval($_GET['u']);
-    $query_where = "WHERE id = ".$int." ";
+$int = 0;
+$query_where_g = "and gu.id_grupo = (SELECT id FROM GRUPO ORDER BY nombre LIMIT 1) ";
+if (isset($_GET["g"]) && preg_match("/^[0-9]+$/", $_GET["g"])){
+    $int = intval($_GET['g']);
+    $query_where_g = "and gu.id_grupo = ".$int." ";
 }
 
 $query_where_q = "and true ";
@@ -22,11 +23,11 @@ if (isset($_GET["q"])){
             $op1 = "selected";
             break;
         case "2":
-            $query_where_q = "and follower = 1 ";
+            $query_where_q = "and u.follower = 1 ";
             $op2 = "selected";
             break;
         case "3":
-            $query_where_q = "and following = 1 ";
+            $query_where_q = "and u.following = 1 ";
             $op3 = "selected";
             break;
         default:
@@ -37,13 +38,14 @@ if (isset($_GET["q"])){
     $op1 = "selected";
 }
 
-$query = "SELECT id, login, name, avatar_url, ".
-        "email, company, blog, location, bio, twitter_username, ".
-        "follower, following ".
-        "FROM USUARIO ".
-        $query_where.
+$query = "SELECT gu.id, u.login, u.name, u.avatar_url, ".
+        "u.email, u.company, u.blog, u.location, u.bio, u.twitter_username, ".
+        "u.follower, u.following ".
+        "FROM USUARIO u , GRUPO_USUARIO gu ".
+        "WHERE u.id = gu.id_usuario ".
+        $query_where_g.
         $query_where_q.
-        "ORDER BY name";
+        "ORDER BY name";  
 $resultado = $conexion->prepare($query);
 $resultado->execute();
 
@@ -151,7 +153,11 @@ $resultado2->execute();
                                     <li class="breadcrumb-item  mr-2 mb-2">
                                         <button type="button" class="btn btn-success mr-2" id="grupos">
                                             <span><i class='fas fa-people-group'></i></span>Grupos</button>
-                                    </li>                                    
+                                    </li>   
+                                    <li class="breadcrumb-item  mr-2 mb-2">
+                                        <button type="button" class="btn btn-info mr-2" id="asignargrupo">
+                                            <span><i class="fa-solid fa-layer-group"></i></span>Asigna</button>
+                                    </li>                                   
                                 </ol>
                             </div>
                         </div>
@@ -163,9 +169,10 @@ $resultado2->execute();
                                         <?php
                                             $i = 1;                                                                             
                                             while($data2 = $resultado2->fetch(PDO::FETCH_ASSOC)){                                           
-                                                $selected = ($i==1)?"selected":"";
+                                                $selected = ($i==1 && $int == 0)?"selected":"";
+                                                $selected = ($int > 0 && $int == $data2['id'])?"selected":"";
                                                 print "<option value='".$data2['id']."' ".$selected.">".$data2['icon']." ".$data2['nombre']."</option>";
-                                                $i += 1;
+                                                $i = 0;
                                             }                                            
                                         ?>
                                         </select>                                        
@@ -202,23 +209,7 @@ $resultado2->execute();
                                             print "<td>". $data['name'] . "</td>";                 
                                             print "<td>".  
                                                     "<a href='#' data-toggle='modal' data-target='#deleteModal' data-id='".
-                                                    $data['id']."' title='Borrar Usuario'><span><i class='fas fa-trash'></i></span></a>". 
-                                                    "&nbsp;&nbsp;" . 
-                                                    "<a href='#' data-toggle='modal' data-target='#createModal'".
-                                                    "data-id='".$data['id']."' ".
-                                                    "data-login='".$data['login']."' ".
-                                                    "data-name='".$data['name']."' ".
-                                                    "data-avatar_url='".$data['avatar_url']."' ".
-                                                    "data-email='".$data['email']."' ".
-                                                    "data-company='".$data['company']."' ".
-                                                    "data-blog='".$data['blog']."' ".
-                                                    "data-location='".$data['location']."' ".
-                                                    "data-bio='".$data['bio']."' ".
-                                                    "data-twitter_username='".$data['twitter_username']."' ".
-                                                    "data-follower='".$data['follower']."' ".
-                                                    "data-following='".$data['following']."' ".
-                                                    "title='Editar Usuario'>".
-                                                    "<span><i class='fas fa-edit'></i></span></a>" .
+                                                    $data['id']."' title='Desasignar Usuario'><span><i style='color:red;' class='fa-solid fa-user-minus'></i></span></a>".                                                     
                                                   "</td>";
                                             print "</tr>";
                                         }                                            
@@ -244,6 +235,28 @@ $resultado2->execute();
             </div>
         </div>
 
+        <!-- Modal Delete -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modalLabelDelete"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content bg-dark">
+                    <form id="formUsuariosEliminar">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabelDelete"><span><i class='fas fa-trash'></i></span>&nbsp;Desasignar Usuario</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Seguro que desea quitar él usuario del grupo?</div>
+                        <input type="text" class="form-control" id="id_borrar" hidden>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <input  type="submit" class="btn btn-danger" value="Borrar">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         <!-- Bootstrap core JavaScript-->
         <script src="./vendor/jquery/jquery.min.js"></script>

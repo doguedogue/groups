@@ -172,7 +172,7 @@ $resultado->execute();
                                             print "<td>". $data['nombre'] . "</td>";
                                             print "<td><div class='badge badge-pill badge-outline-warning'>". $data['registros'] . "</div></td>";
                                             print "<td>".  
-                                                  "<a class='about' href='grupos.php?g=".$data['id_grupo']."' title='ver'>👁️‍🗨️</a>";
+                                                  "<a class='about' href='detallegrupo.php?g=".$data['id_grupo']."' title='ver'>👁️‍🗨️</a>";
                                                   "</td>";
                                             print "</tr>";
                                         }                                            
