@@ -23,8 +23,6 @@
         for (let i = 0; i < size; i++) {
             arreglo_usuarios.push(arreglo[i][0]);
         }
-
-        // console.log("Artículos: " + arreglo_usuarios);
         
         //Grupo
         const id_grupo = $.trim($('#grupos_select option:selected').val());
@@ -34,7 +32,7 @@
             Swal.fire({
                 icon: 'warning',
                 title: 'Mensaje',
-                text: 'No se ha seleccionado ningún artículo',
+                text: 'No se ha seleccionado ningún usuario',
             });
             return false;
         } else {
