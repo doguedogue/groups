@@ -10,6 +10,9 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="./vendor/sweetalert2/dist/dark.css" />
+
         <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
     </head>
     <body class="sb-nav-fixed">
@@ -82,23 +85,27 @@
                             <ol class="breadcrumb mb-1">
                                     <li class="breadcrumb-item  mr-2">
                                         <select class="form-control combo-dark" name="import_select" id="import_select">
-                                            <option value="follower" selected>Followers</option>
-                                            <option value="following">Following</option>
+                                            <option value="Followers" selected>Followers</option>
+                                            <option value="Following">Following</option>
                                         </select>                                        
                                     </li>
                                     &nbsp;
                                     <li class="breadcrumb-item  mr-2">
                                         <select class="form-control combo-dark" name="cantidad" id="cantidad">
-                                            <option value="5" selected>5</option>
-                                            <option value="10">10</option>
-                                            <option value="20">20</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                            <option value="500">500</option>
-                                            <option value="1000">1,000</option>
-                                            <option value="5000">5,000</option>
+                                            <option value="1" selected>1 Página</option>
+                                            <option value="5">5 Páginas</option>
+                                            <option value="10">10 Páginas</option>
+                                            <option value="20">20 Páginas</option>
+                                            <option value="30">30 Páginas</option>
+                                            <option value="40">40 Páginas</option>
+                                            <option value="50">50 Páginas</option>
+                                            <option value="100">100 Páginas</option>
+                                            <option value="150">150 Páginas</option>
+                                            <option value="200">200 Páginas</option>
+                                            <option value="250">250 Páginas</option>
+                                            <option value="300">300 Páginas</option>
                                             <option value="0">Todos</option>
-                                        </select>                                        
+                                        </select>
                                     </li>
                                     &nbsp;
                                     <button type="button" class="btn btn-warning mr-3" id="importar">
@@ -118,19 +125,32 @@
                         </div>
                         <div class="card mb-4">
                             <div class="card-body">
-                                <ol class="breadcrumb mb-1">
-                                    <li class="breadcrumb-item  mr-2">
+                                <ol class="breadcrumb mb-1 d-flex flex-column">
+                                    <li class="breadcrumb-item mr-2 mb-2">
                                         <p><b>NOTA:</b> Para la conexión con <span style="color:#be1e2d;">GitHub&trade;</span> 
                                             es necesario que cuente con su token personal de acceso
                                             <a href="https://github.com/settings/tokens">aquí</a>
                                         </p>
-                                    </li>      
-                                    
-                                    
+                                    </li>
+                                    <li class="breadcrumb-item mr-2 mb-2">
+                                        <div>
+                                            <a href="https://github.com/settings/tokens">
+                                                <img src="./assets/img/configura_token.png" alt="configuración de token" width="250px">                            
+                                            </a>
+                                        </div>
+                                    </li>
+                                    <li class="breadcrumb-item mr-2 mb-2">
+                                        <div>
+                                            <button type="button" class="btn btn-info mr-3" id="test">
+                                                    <span><i class="fa-solid fa-flask-vial"></i></span>&nbsp;TEST</button>
+                                        </div>
+                                    </li>
+                                    <li class="breadcrumb-item mr-2 mb-2">
+                                        <div>
+                                            <p id="msg_test"></p>
+                                        </div>
+                                    </li>
                                 </ol>
-                                <a href="https://github.com/settings/tokens">
-                                    <img src="./assets/img/configura_token.png" alt="configuración de token" width="250px">                            
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -150,6 +170,151 @@
             </div>
         </div>
 
+        <script type="module">
+            import { request } from "https://cdn.skypack.dev/@octokit/request";
+
+            $(document).ready(function () {
+                document.getElementById('div_resultados').style.display = 'none';
+            });
+
+            $('#importar').click(function () {
+
+                const import_select = $.trim($('#import_select option:selected').val());
+                const cantidad = $.trim($('#cantidad option:selected').val());
+
+                Swal.fire({
+                    title: "Seguro que desea importar?",
+                    text:  cantidad +" página(s) de "+ import_select,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonText: 'Importar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $("#message").html(
+                            "<b>Importar: </b> " + import_select + "<br>" +
+                            "<b>Páginas para procesar: </b> " + cantidad
+                        );
+
+                        document.getElementById('div_resultados').style.display = 'block';
+                        if (import_select === "Followers"){
+                            followers();
+                        }else if (import_select === "Following"){
+                            //TODO
+                            //following();
+                        }                        
+                    }
+                });
+
+            });
+
+            $('#test').click(function () {
+                hola();
+            });
+
+            async function followers(){
+                const  outputDiv = document.getElementById("message");
+                outputDiv.innerHTML += "<br>Leyendo...";
+        
+                let followers = new Array();
+                let current_page = 1;
+                const MAX_NUMBER_OF_IMPORTS_PAGES = $.trim($('#cantidad option:selected').val());
+
+                do {
+                    const result = await request("GET /user/followers", {
+                        headers: {
+                            authorization: "token <?php echo getenv('groups_token'); ?>",
+                        },
+                        page: current_page,           
+                    });
+            
+                    var data = result.data;
+                    let i=1;
+                    for (let key in data) {
+                        const username = JSON.stringify(data[key].login).replaceAll('"','');
+                        followers.push(username);
+
+                        //TODO quitar
+                        if (i==1){
+                            getUser(username);
+                        }
+                        i++;
+                    }
+                    
+                    if (current_page % 10 == 0 ){
+                        console.log("Current page: " + current_page + " Datos: "+ data.length);
+                    }
+                    current_page ++;
+
+                } while(data.length > 0 && current_page <= MAX_NUMBER_OF_IMPORTS_PAGES);
+
+                let usuarios_html = "";
+                for (let i in followers) {                
+                    usuarios_html += followers[i] + "<br>"
+                }
+
+                outputDiv.innerHTML += '<br>Número de Followers: '+followers.length + "<br><hr>"+ usuarios_html;
+            }
+
+            async function getUser(username){
+                const  outputDiv = document.getElementById("message");
+                console.log("getUser("+username+")");
+
+                const result = await request("GET /users/{username}", {
+                    headers: {
+                        authorization: "token <?php echo getenv('groups_token'); ?>",
+                    },
+                    username,           
+                });
+
+                console.log("Resultado: " + JSON.stringify(result));
+                var data = result.data;
+                console.log("Data: " + JSON.stringify(data));
+
+                const login = JSON.stringify(data.login).replaceAll('"','');
+                const name = JSON.stringify(data.name).replaceAll('"','');
+                const email = JSON.stringify(data.email).replaceAll('"','');
+                const avatar_url = JSON.stringify(data.avatar_url).replaceAll('"','');
+                const company = JSON.stringify(data.company).replaceAll('"','');
+                const blog = JSON.stringify(data.blog).replaceAll('"','');
+                const location = JSON.stringify(data.location).replaceAll('"','');
+                const bio = JSON.stringify(data.bio).replaceAll('"','');
+                const twitter_username = JSON.stringify(data.twitter_username).replaceAll('"','');
+                const follower = 1;
+                const following = 0;
+
+                outputDiv.innerHTML += "<br>********** Información del usuario >**********<hr> "+
+                    "login: " + login + 
+                    "<br> name: " + name + 
+                    "<br> email: " + email + 
+                    "<br> avatar_url: " + avatar_url + 
+                    "<br> company: " + company + 
+                    "<br> blog: " + blog + 
+                    "<br> location: " + location + 
+                    "<br> bio: " + bio + 
+                    "<br> twitter_username: " + twitter_username + 
+                    "<br> follower: " + follower + 
+                    "<br> following: " + following;
+
+            }
+            
+            async function hola(){
+                const  outputDiv = document.getElementById("msg_test");
+                outputDiv.innerHTML += "<br>Leyendo...";
+
+                const result = await request("GET /user", {
+                    headers: {
+                        authorization: "token <?php echo getenv('groups_token'); ?>",
+                    },           
+                });
+
+                // console.log("Result, %s", JSON.stringify(result));
+                outputDiv.innerHTML += '<br>Hola, '+ result.data.name + " ("+result.data.login+")<br>Prueba OK";
+            }
+        </script>       
+
         <!-- Bootstrap core JavaScript-->
         <script src="./vendor/jquery/jquery.min.js"></script>
         <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -159,8 +324,8 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
-        <script src="js/importar.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple.js"></script>
+        <script src="js/datatables-simple.js"></script>        
+        <script src="./vendor/sweetalert2/dist/sweetalert2.min.js"></script>
     </body>
 </html>
