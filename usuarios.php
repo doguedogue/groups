@@ -5,6 +5,14 @@ include_once './bd/conexion.php';
 $objconexion = new Conexion();
 $conexion = $objconexion->Conectar();
 
+function removeSpecialChar($cadena){
+    $bio = str_replace("|", " ", $cadena);
+    $bio = str_replace("¾", " ", $bio);
+    $bio = str_replace('"', " ", $bio);
+    $bio = str_replace("'", " ", $bio);
+    $bio = trim(preg_replace('/\s+/', ' ', $bio));
+    return $bio;
+}
 $query_where = "WHERE true ";
 if (isset($_GET["u"]) && preg_match("/^[0-9]+$/", $_GET["u"])){
     $int = intval($_GET['u']);
@@ -43,7 +51,11 @@ $query = "SELECT id, login, name, avatar_url, ".
         "FROM USUARIO ".
         $query_where.
         $query_where_q.
-        "ORDER BY name";
+        "ORDER BY name".
+        // " LIMIT 1 ".
+        // " OFFSET 40 ".
+        ""
+        ;
 $resultado = $conexion->prepare($query);
 $resultado->execute();
 
@@ -184,7 +196,8 @@ $resultado->execute();
                                             print "<tr>";
                                             print "<td><img src='". $data['avatar_url'] ."' alt='avatar' width='40px' class='avatar'></td>";
                                             print "<td>". $data['login'] . "</td>";
-                                            print "<td>". $data['name'] . "</td>";                 
+                                            print "<td>". $data['name'] . "</td>";
+                                            $bio = removeSpecialChar($data['bio']);
                                             print "<td>".  
                                                     "<a href='#' data-toggle='modal' data-target='#deleteModal' data-id='".
                                                     $data['id']."' title='Borrar Usuario'><span><i class='fas fa-trash'></i></span></a>". 
@@ -198,7 +211,7 @@ $resultado->execute();
                                                     "data-company='".$data['company']."' ".
                                                     "data-blog='".$data['blog']."' ".
                                                     "data-location='".$data['location']."' ".
-                                                    "data-bio='".$data['bio']."' ".
+                                                    "data-bio='".$bio."' ".
                                                     "data-twitter_username='".$data['twitter_username']."' ".
                                                     "data-follower='".$data['follower']."' ".
                                                     "data-following='".$data['following']."' ".
