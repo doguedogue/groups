@@ -188,7 +188,7 @@ $resultado->execute();
                                             print "<td>".  
                                                     "<a href='#' data-toggle='modal' data-target='#deleteModal' data-id='".
                                                     $data['id']."' title='Borrar Usuario'><span><i class='fas fa-trash'></i></span></a>". 
-                                                    "&nbsp;&nbsp;" . 
+                                                    "  " . 
                                                     "<a href='#' data-toggle='modal' data-target='#createModal'".
                                                     "data-id='".$data['id']."' ".
                                                     "data-login='".$data['login']."' ".
